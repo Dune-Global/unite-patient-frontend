@@ -36,10 +36,10 @@ export default function TopBar() {
             </Avatar>
           </div>
           <div className="flex flex-col items-start justify-start">
-            <h3 className="text-sm font-medium">Wasath Theekshana</h3>
+            <h3 className="text-sm font-medium">Lithara Perera</h3>
             <DropdownMenu>
               <DropdownMenuTrigger className="text-sm opacity-70">
-                Physician
+                Patient
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
