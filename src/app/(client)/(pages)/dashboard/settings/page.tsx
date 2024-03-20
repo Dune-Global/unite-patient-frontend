@@ -4,6 +4,7 @@ import { ProfileInfo } from "@/data/mock/profile-info";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React from "react"
 import PatientCard from "@/components/profile/PatientCard";
+import ChangePasswordCard from "@/components/profile/ChangePasswordCard";
 
 export default function Settings() {
   return (
@@ -64,7 +65,7 @@ export default function Settings() {
               value="change-password"
               className="bg-ugray-0 p-4 rounded-lg shadow-sm"
             >
-              {/* <ChangePasswordCard /> */} Change Password
+              <ChangePasswordCard /> 
             </TabsContent>
           </Tabs>
         </div>
