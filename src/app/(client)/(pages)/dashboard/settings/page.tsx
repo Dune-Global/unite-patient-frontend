@@ -8,6 +8,9 @@ import ChangePasswordCard from "@/components/profile/ChangePasswordCard";
 import EditProfileCard from "@/components/profile/EditProfileCard";
 import ReportsSection from "@/components/profile/ReportsSection";
 import BookAppointmentCard from "@/components/profile/BookAppointmentCard";
+import { z } from "zod";
+import { updatePatient } from "@/api/profile/profileAPI";
+import { toast } from "@/components/ui/use-toast";
 
 export default function Settings() {
   const reports = [
