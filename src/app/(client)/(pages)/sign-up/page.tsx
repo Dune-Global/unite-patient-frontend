@@ -86,7 +86,6 @@ export default function SignIn() {
       firstName: "",
       lastName: "",
       email: "",
-
       password: "",
     },
   });
@@ -233,20 +232,20 @@ export default function SignIn() {
                       <FormItem>
                         <Popover>
                           <PopoverTrigger asChild>
-                            <FormControl>
+                            <FormControl >
                               <Button
                                 variant={"outline"}
                                 className={cn(
-                                  "w-full border-ugray-100 pl-3 text-left font-normal",
+                                  "w-full border-ugray-100 pl-3 text-left font-normal flex flex-row  ",
                                   !field.value && "text-muted-foreground"
                                 )}
                               >
                                 {field.value ? (
                                   format(field.value, "PPP")
                                 ) : (
-                                  <span>Pick a date</span>
+                                  <span className="flex">Pick a date</span>
                                 )}
-                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50 flex" />
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
@@ -283,7 +282,7 @@ export default function SignIn() {
                             <SelectTrigger className="w-full">
                               <SelectValue placeholder="Select a Gender" />
                             </SelectTrigger>
-                            {/* <SelectContent>
+                            <SelectContent>
                               {genderList.map((gender: any, index) => {
                                 return (
                                   <SelectItem key={index} value={gender}>
@@ -291,7 +290,7 @@ export default function SignIn() {
                                   </SelectItem>
                                 );
                               })}
-                            </SelectContent> */}
+                            </SelectContent>
                           </Select>
                         </FormControl>
                         <FormMessage
