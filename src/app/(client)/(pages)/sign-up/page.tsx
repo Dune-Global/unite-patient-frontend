@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { toast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-// import { loginAccount, registerAccount } from "@/api/auth/authAPI";
+import { loginAccount, registerAccount} from "@/api/auth/authAPI";
 import {
   Select,
   SelectContent,
@@ -23,7 +23,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-// import { format } from "date-fns";
 import {
   Form,
   FormControl,
@@ -33,7 +32,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { getGenderList } from "@/api/enums/enumsAPI";
-import { registerAccount } from "@/api/auth/authAPI";
 import { Button } from "@/components/common/Button";
 import { format } from "date-fns";
 
