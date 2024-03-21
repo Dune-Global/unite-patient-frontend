@@ -6,6 +6,7 @@ export const ProfileInfo = [
     image: "https://avatar.iran.liara.run/public/girl?username=Lithara",
     gender: "Female",
     age: 25,
+    dateOfBirth: "1999-02-25",
     email: "litharaperera@gmail.com",
     contactNumber: "0779876543",
     weight: 51,

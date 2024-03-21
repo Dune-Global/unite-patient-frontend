@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Unite | Patient Settings",
-  description: "Patient Settings Page",
+  title: "Unite | Sign in",
+  description: "Doctor SignIn Page",
 };
 
 export default function Layout({

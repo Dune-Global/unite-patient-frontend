@@ -5,8 +5,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React from "react"
 import PatientCard from "@/components/profile/PatientCard";
 import ChangePasswordCard from "@/components/profile/ChangePasswordCard";
+import EditProfileCard from "@/components/profile/EditProfileCard";
+import ReportsSection from "@/components/profile/ReportsSection";
+import BookAppointmentCard from "@/components/profile/BookAppointmentCard";
+import { z } from "zod";
+import { updatePatient } from "@/api/profile/profileAPI";
+import { toast } from "@/components/ui/use-toast";
 
 export default function Settings() {
+  const reports = [
+    { id: "1", name: "Report 1", date: "2024-03-17" },
+    { id: "2", name: "Report 2", date: "2024-03-18" },
+    { id: "3", name: "Report 3", date: "2024-03-19" },
+  ];
+
   return (
     <div className="flex flex-col">
       <div>
@@ -16,6 +28,7 @@ export default function Settings() {
         <div>
           {ProfileInfo.map((profile) => (
             <div key={profile.id}>
+              <div>
               <PatientCard
                 image={profile.image}
                 name={profile.fName + " " + profile.lName}
@@ -30,6 +43,10 @@ export default function Settings() {
                 allergies={profile.allergies}
                 hereditaryDiseases={profile.hereditaryDiseases}
               />
+              </div>
+              <div>
+                <ReportsSection reports={reports} />
+              </div>
             </div>
           ))}
         </div>
@@ -52,14 +69,14 @@ export default function Settings() {
             </TabsList>
             <TabsContent value="book-appointment" className="w-full">
               <div className="bg-ugray-0 p-4 rounded-lg shadow-sm">
-                Book an appointment
+                <BookAppointmentCard />
               </div>
             </TabsContent>
             <TabsContent
               value="edit-profile"
               className="bg-ugray-0 p-4 rounded-lg shadow-sm"
             >
-              {/* <EditProfileCard /> */} Edit Profile
+              <EditProfileCard /> 
             </TabsContent>
             <TabsContent
               value="change-password"
