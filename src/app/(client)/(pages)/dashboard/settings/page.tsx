@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React from "react"
 import PatientCard from "@/components/profile/PatientCard";
 import ChangePasswordCard from "@/components/profile/ChangePasswordCard";
+import EditProfileCard from "@/components/profile/EditProfileCard";
 
 export default function Settings() {
   return (
@@ -59,7 +60,7 @@ export default function Settings() {
               value="edit-profile"
               className="bg-ugray-0 p-4 rounded-lg shadow-sm"
             >
-              {/* <EditProfileCard /> */} Edit Profile
+              <EditProfileCard /> 
             </TabsContent>
             <TabsContent
               value="change-password"
