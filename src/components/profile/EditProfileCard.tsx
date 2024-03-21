@@ -184,7 +184,7 @@ export default function EditProfileCard() {
               </div>
               <div className="flex flex-col lg:flex-row gap-4 w-full">
                 <div className="snap-end w-full">
-                <div className="text-base">Date of Birth</div>
+                  <div className="text-base">Date of Birth</div>
                   <FormField
                     control={form.control}
                     name="dateOfBirth"
@@ -212,7 +212,7 @@ export default function EditProfileCard() {
                           <PopoverContent className="w-auto p-0" align="start">
                             <Calendar
                               mode="single"
-                              selected={date}
+                              selected={new Date(field.value)}
                               onSelect={field.onChange}
                               disabled={(date) =>
                                 date > new Date() ||
@@ -377,12 +377,21 @@ export default function EditProfileCard() {
               </div>
               <div className="flex gap-4">
                 <div>
-                  <Button type="submit" size="lg" className="text-ugray-0 bg-ublue-200">
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="text-ugray-0 bg-ublue-200"
+                  >
                     Save Changes
                   </Button>
                 </div>
                 <div>
-                  <Button type="reset" variant="outline" size="lg" className="text-ublue-200 outline-ublue-200">
+                  <Button
+                    type="reset"
+                    variant="outline"
+                    size="lg"
+                    className="text-ublue-200 outline-ublue-200"
+                  >
                     Reset Changes
                   </Button>
                 </div>
