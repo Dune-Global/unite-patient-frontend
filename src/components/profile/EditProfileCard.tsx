@@ -28,6 +28,7 @@ import { ProfileInfo } from "@/data/mock/profile-info";
 import { CalendarIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
+import { updatePatient, verifyEmail } from "@/api/profile/profileAPI";
 
 const formSchema = z.object({
   firstName: z.string().nonempty({ message: "First name is required" }),
@@ -65,6 +66,72 @@ export default function EditProfileCard() {
     },
   });
 
+  const handleVerifyEmail = async (values: any) => {
+    try {
+      const res = await verifyEmail(values);
+      console.log(res);
+
+      if (res.status === 200) {
+        toast({
+          title: "Email Verified Successfully",
+          description: (
+            <pre className="bg-ugray-900 mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              <code className=" text-ugray-0">
+                {JSON.stringify(values, null, 2)}
+              </code>
+            </pre>
+          ),
+        });
+      } else {
+        toast({
+          title: "Email verify failed",
+          description: "Please try again",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Email verify failed",
+        description: "Please try again",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleEditProfile = async (values: any) => {
+    try {
+      const res = await updatePatient(values);
+      console.log(res);
+
+      if (res.status === 200) {
+        toast({
+          title: "Patient Updated Successfully",
+          description: (
+            <pre className="bg-ugray-900 mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              <code className=" text-ugray-0">
+                {JSON.stringify(values, null, 2)}
+              </code>
+            </pre>
+          ),
+        });
+      } else {
+        toast({
+          title: "Patient update failed",
+          description: "Please try again",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Patient update failed",
+        description: "Please try again",
+        variant: "destructive",
+      });
+    }
+  };
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     toast({
       title: "Saved changes successfully!",
@@ -77,8 +144,6 @@ export default function EditProfileCard() {
       ),
     });
   }
-
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
 
   return (
     <div>
@@ -148,7 +213,11 @@ export default function EditProfileCard() {
                             {...field}
                           />
                         </FormControl>
-                        <Button size="sm" className="absolute top-0 right-2 text-ugray-0 bg-ublue-200">
+                        <Button
+                          size="sm"
+                          className="absolute top-0 right-2 text-ugray-0 bg-ublue-200"
+                          onClick={handleVerifyEmail}
+                        >
                           Verify
                         </Button>
                         <FormMessage
@@ -381,18 +450,9 @@ export default function EditProfileCard() {
                     type="submit"
                     size="lg"
                     className="text-ugray-0 bg-ublue-200"
+                    onClick={handleEditProfile}
                   >
                     Save Changes
-                  </Button>
-                </div>
-                <div>
-                  <Button
-                    type="reset"
-                    variant="outline"
-                    size="lg"
-                    className="text-ublue-200 outline-ublue-200"
-                  >
-                    Reset Changes
                   </Button>
                 </div>
               </div>

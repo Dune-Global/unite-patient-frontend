@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import { z } from "zod";
 import { Eye, EyeOff } from "lucide-react";
+import { updatePassword } from "@/api/profile/profileAPI";
 
 const formSchema = z.object({
   currentPassword: z
@@ -44,6 +45,39 @@ export default function AvailabilityCard() {
       confirmPassword: "",
     },
   });
+
+  const handleChangePassword = async (values: any) => {
+    try {
+      const res = await updatePassword(values);
+      console.log(res);
+
+      if (res.status === 200) {
+        toast({
+          title: "Password Changed Successfully",
+          description: (
+            <pre className="bg-ugray-900 mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              <code className=" text-ugray-0">
+                {JSON.stringify(values, null, 2)}
+              </code>
+            </pre>
+          ),
+        });
+      } else {
+        toast({
+          title: "Password change failed",
+          description: "Please try again",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Password change failed",
+        description: "Please try again",
+        variant: "destructive",
+      });
+    }
+  };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     toast({
@@ -204,7 +238,7 @@ export default function AvailabilityCard() {
               </div>
             </div>
             <div>
-              <Button type="submit" size="lg">
+              <Button type="submit" size="lg" onClick={handleChangePassword}>
                 Change Password
               </Button>
             </div>
