@@ -19,7 +19,7 @@ CustomAxios.interceptors.response.use(
     const status = err.response ? err.response.status : null;
     if (status === 401) {
       return axios({
-        method: "POST",
+        method: "GET",
         baseURL: BACKEND_BASE_URL,
         url: REFRESH_URL,
         headers: {
