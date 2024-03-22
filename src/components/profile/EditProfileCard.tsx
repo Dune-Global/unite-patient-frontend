@@ -61,8 +61,8 @@ export default function EditProfileCard() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       firstName: user.firstName,
-      lastName: "",
-      email: "",
+      lastName: user.lastName,
+      email: user.email,
       phoneNumber: "",
       dateOfBirth: "",
       gender: "",
