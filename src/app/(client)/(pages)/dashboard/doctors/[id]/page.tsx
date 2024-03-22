@@ -52,30 +52,38 @@ const Page = () => {
     "
     >
       <div className="md:col-span-1">
-        <div>Params: {params.id}</div>
         <DoctorCard
-          doctorId="1"
           image="https://randomuser.me/api/portraits/men/59.jpg"
-          name="Dilantha Wijesinghe"
-          specialty="Physician"
-          email="wdilantha66@gmail.com"
-          contactNumber="+94 72 1089721"
-          gender="Male"
-          slmc="SLMC 12345"
-          currentHospital="General Hospital, Colombo"
-          currentUniversity="-"
-          personalClinic="No"
-          clinicName="-"
-          clinicAddress="-"
+          name={`
+            ${doctorDetails.firstName}  ${doctorDetails.lastName}
+          `}
+          designation={doctorDetails.designation}
+          email={doctorDetails.email}
+          mobile={doctorDetails.mobile}
+          gender={doctorDetails.gender}
+          slmcNumber={doctorDetails.slmcNumber}
+          currentHospital={doctorDetails.currentHospital}
+          currentUniversity={doctorDetails.currentUniversity}
+          isClinic={doctorDetails.clinic?.isClinic ? "Yes" : "No"}
+          clinicName={
+            doctorDetails.clinic?.isClinic
+              ? doctorDetails.clinic.clinicName
+              : "-"
+          }
+          clinicAddress={
+            doctorDetails.clinic?.isClinic
+              ? doctorDetails.clinic.clinicAddress
+              : "-"
+          }
         />
       </div>
 
-      <div className="md:col-span-2 space-y-28 md:px-6">
-        <div className="mb-14 mt-6 max-w-[960px] w-full px-10 xl:px-10">
+      <div className="md:col-span-2  md:px-6">
+        {/* <div className="mb-14 mt-6 max-w-[960px] w-full px-10 xl:px-10">
           <Progress currentStep={2} />
-        </div>
+        </div> */}
 
-        <div className="my-16 ">
+        <div className="my-4 ">
           {doctorHistory.map((historyItem, index) => (
             <HistoryAccordion
               key={historyItem.id}

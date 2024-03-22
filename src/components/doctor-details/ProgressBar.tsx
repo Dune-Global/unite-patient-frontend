@@ -36,7 +36,7 @@ const ProgressStep: React.FC<ProgressStepProps> = ({
 
         <div
           className={classNames(
-            "absolute top-14 w-full min-w-[100px] xl:min-w-[200px] flex text-center justify-center items-center",
+            "absolute top-14 w-full min-w-[100px] xl:min-w-[200px] flex text-center justify-center items-center hidden lg:block",
             {
               "text-uindigo-400": isCompleted,
               " text-ugray-900": !isCompleted,

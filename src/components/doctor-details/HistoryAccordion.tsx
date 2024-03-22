@@ -10,6 +10,7 @@ import { ChevronDown } from "lucide-react";
 import React from "react";
 import { Button } from "../common/Button";
 import { IAccordionData } from "@/types/accordion-data";
+import Progress from "./ProgressBar";
 
 const HistoryAccordion: React.FC<IAccordionData> = ({
   diseaseDescription,
@@ -46,6 +47,9 @@ const HistoryAccordion: React.FC<IAccordionData> = ({
               <span className="text-ugray-200 sm:text-left text-justify text-sm sm:text-base">
                 {diseaseDescription}
               </span>
+              <div className="md:mb-14 mt-6 max-w-[960px] w-full md:px-10 xl:px-16">
+                <Progress currentStep={2} />
+              </div>
             </div>
             <ChevronDown className="h-6 w-6 shrink-0 text-ugray-400 transition-transform duration-200" />
           </AccordionTrigger>

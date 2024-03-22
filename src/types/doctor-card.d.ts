@@ -1,15 +1,14 @@
 export type IDoctorCard = {
-  doctorId: string;
   image: string;
   name: string;
-  specialty: string;
+  designation: string;
   email: string;
-  contactNumber: string;
+  mobile: number;
   gender: string;
-  slmc: string;
+  slmcNumber: string;
   currentHospital: string;
   currentUniversity: string;
-  personalClinic: string;
+  isClinic: string;
   clinicName: string;
   clinicAddress: string;
 };
