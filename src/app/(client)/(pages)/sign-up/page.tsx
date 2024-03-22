@@ -7,8 +7,7 @@ import { useForm } from "react-hook-form";
 
 import Image from "next/image";
 import { toast } from "@/components/ui/use-toast";
-import { ToastAction } from "@/components/ui/toast";
-import { loginAccount, registerAccount} from "@/api/auth/authAPI";
+import { registerAccount } from "@/api/auth/authAPI";
 import {
   Select,
   SelectContent,
@@ -32,8 +31,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { getGenderList } from "@/api/enums/enumsAPI";
-import { Button } from "@/components/common/Button";
 import { format } from "date-fns";
+import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
   firstName: z
@@ -230,7 +229,7 @@ export default function SignIn() {
                       <FormItem>
                         <Popover>
                           <PopoverTrigger asChild>
-                            <FormControl >
+                            <FormControl>
                               <Button
                                 variant={"outline"}
                                 className={cn(
@@ -345,7 +344,6 @@ export default function SignIn() {
                 <Button className="w-full bg-ublue-100 text-ugray-0">
                   Sign Up
                 </Button>
-
                 <div className="text-sm text-center pt-2">
                   <p className="text-black">
                     Already have an account?{" "}

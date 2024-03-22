@@ -5,6 +5,7 @@ import pageReducer from "./reducers/page-reducer";
 import authReducer from "./reducers/auth-reducer";
 
 const rootReducer = combineReducers({
+  auth: authReducer,
   pageState: pageReducer,
   authState: authReducer,
 });
