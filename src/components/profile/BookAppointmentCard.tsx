@@ -137,10 +137,10 @@ export default function BookAppointmentCard() {
                             <SelectValue placeholder="Select an appointment" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="4">Appointment No : 04 | Time : 09:10 AM</SelectItem>
-                            <SelectItem value="5">Appointment No : 05 | Time : 09:20 AM</SelectItem>
-                            <SelectItem value="6">Appointment No : 06 | Time : 09:30 AM</SelectItem>
-                            <SelectItem value="7">Appointment No : 07 | Time : 09:40 AM</SelectItem>
+                            <SelectItem value="4">Appointment No : 04 | Time : 09:10 AM | Lanka Hospital</SelectItem>
+                            <SelectItem value="5">Appointment No : 05 | Time : 09:20 AM | Durdans Hospital</SelectItem>
+                            <SelectItem value="6">Appointment No : 06 | Time : 09:30 AM | Asiri Medical Hospital</SelectItem>
+                            <SelectItem value="7">Appointment No : 07 | Time : 09:40 AM | Nawaloka Hospital</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
