@@ -29,6 +29,14 @@ import { CalendarIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import { updatePatient, verifyEmail } from "@/api/profile/profileAPI";
+import { getUser } from "@/utils/getUser";
+import { IAccessToken } from "@/types/jwt";
+
+let user:IAccessToken;
+const tempUser = getUser();
+if (tempUser !== undefined && tempUser !== null) {
+  user = tempUser;
+}
 
 const formSchema = z.object({
   firstName: z.string().nonempty({ message: "First name is required" }),
@@ -52,7 +60,7 @@ export default function EditProfileCard() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
+      firstName: user.firstName,
       lastName: "",
       email: "",
       phoneNumber: "",
@@ -66,26 +74,22 @@ export default function EditProfileCard() {
     },
   });
 
-  const handleVerifyEmail = async (values: any) => {
+  const handleVerifyEmail = async () => {
     try {
-      const res = await verifyEmail(values);
+      const res:any = await verifyEmail();
       console.log(res);
 
       if (res.status === 200) {
         toast({
-          title: "Email Verified Successfully",
+          title: "Verification Email Sent",
           description: (
-            <pre className="bg-ugray-900 mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-              <code className=" text-ugray-0">
-                {JSON.stringify(values, null, 2)}
-              </code>
-            </pre>
+            "Check your email for the verification link"
           ),
         });
       } else {
         toast({
-          title: "Email verify failed",
-          description: "Please try again",
+          title: "Something went wrong!",
+          description: res.data.message,
           variant: "destructive",
         });
       }
@@ -213,13 +217,17 @@ export default function EditProfileCard() {
                             {...field}
                           />
                         </FormControl>
-                        <Button
-                          size="sm"
-                          className="absolute top-0 right-2 text-ugray-0 bg-ublue-200"
-                          onClick={handleVerifyEmail}
-                        >
-                          Verify
-                        </Button>
+
+                        {user.isEmailVerified ? null : (
+                          <Button
+                            size="sm"
+                            className="absolute top-0 right-2 text-ugray-0 bg-ublue-200"
+                            onClick={handleVerifyEmail}
+                          >
+                            Verify
+                          </Button>
+                        )}
+
                         <FormMessage
                           className={`${formBaseStyles.errorMessages}`}
                         />
