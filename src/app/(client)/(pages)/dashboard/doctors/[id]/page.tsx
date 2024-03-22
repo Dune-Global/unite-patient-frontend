@@ -6,8 +6,6 @@ import {
 } from "@/api/doctor-details/doctorDetailsAPI";
 import DoctorCard from "@/components/doctor-details/DoctorCard";
 import HistoryAccordion from "@/components/doctor-details/HistoryAccordion";
-import { PatientHistory } from "@/data/mock/doctor-history";
-import { IDoctorHistoryList } from "@/types/doctor-history";
 import { IDoctorPatientDetails } from "@/types/doctor-patient-details";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -19,24 +17,10 @@ interface PatientHistoryProps {
 const Page: React.FC<PatientHistoryProps> = ({ patientHistory }) => {
   const params = useParams();
 
-  const [doctorHistory, setDoctorHistory] = useState<IDoctorPatientDetails>();
-
   const [doctorDetails, setDoctorDetails] = useState<any>({});
 
   const [doctorPatientDetails, setDoctorPatientDetails] =
     useState<IDoctorPatientDetails | null>(null);
-
-  // useEffect(() => {
-  //   async function fetchDoctorHistory() {
-  //     try {
-  //       const historyData = await getDoctorHistory();
-  //       setDoctorHistory(historyData);
-  //     } catch (error) {
-  //       console.error("Error fetching doctor history", error);
-  //     }
-  //   }
-  //   fetchDoctorHistory();
-  // }, []);
 
   useEffect(() => {
     const getDoctorPatientDetailsBySessionIdActionHandler = (
@@ -81,7 +65,7 @@ const Page: React.FC<PatientHistoryProps> = ({ patientHistory }) => {
     >
       <div className="md:col-span-1">
         <DoctorCard
-          image="https://randomuser.me/api/portraits/men/59.jpg"
+          image={doctorDetails.imgUrl}
           name={`
             ${doctorDetails.firstName}  ${doctorDetails.lastName}
           `}

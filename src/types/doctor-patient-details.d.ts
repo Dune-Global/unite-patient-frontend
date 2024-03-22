@@ -13,8 +13,8 @@ type Prescription = {
   sessionDate: string;
   symptoms: string;
   diseases: string;
-  description: string;
-  stage: string;
+  sessionDescription: string;
+  stage: Stage;
   weight: number;
   height: number;
   nextChanelDate: string;
@@ -36,3 +36,9 @@ type Report = {
   dateToTake: string;
   _id: string;
 };
+
+type Stage =
+  | "Medicine Started"
+  | "Maintenance Stage"
+  | "Recovery Stage"
+  | "Final Stage";
