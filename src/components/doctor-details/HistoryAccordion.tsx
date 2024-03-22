@@ -9,22 +9,28 @@ import {
 import { ChevronDown } from "lucide-react";
 import React from "react";
 import { Button } from "../common/Button";
-import { IAccordionData } from "@/types/accordion-data";
 import Progress from "./ProgressBar";
-import {
-  IDoctorPatientDetails,
-  Prescription,
-} from "@/types/doctor-patient-details";
+import { Prescription, Stage } from "@/types/doctor-patient-details";
 
 interface HistoryAccordionProps {
   details: Prescription;
   isLastItem?: boolean;
 }
+
+const STAGE_MAP: Record<Stage, number> = {
+  "Medicine Started": 1,
+  "Maintenance Stage": 2,
+  "Recovery Stage": 3,
+  "Final Stage": 4,
+};
+
 const HistoryAccordion: React.FC<HistoryAccordionProps> = ({
   details,
   isLastItem = false,
 }) => {
   console.log("\n\n\nHistoryAccordion props:", details);
+
+  const currentStage = STAGE_MAP[details.stage] || 1;
 
   return (
     <div
@@ -48,11 +54,11 @@ const HistoryAccordion: React.FC<HistoryAccordionProps> = ({
               <span className="text-ugray-900 text-left text-lg font-semibold">
                 {details.diseases}
               </span>
-              <span className="text-ugray-200 sm:text-left text-justify text-sm sm:text-base">
-                {details.description}
+              <span className="text-ugray-200 font-normal sm:text-left text-justify text-sm sm:text-base">
+                {details.sessionDescription}
               </span>
               <div className="md:mb-14 mt-6 max-w-[960px] w-full md:px-10 xl:px-16">
-                <Progress currentStep={2} />
+                <Progress currentStep={currentStage} />
               </div>
             </div>
             <ChevronDown className="h-6 w-6 shrink-0 text-ugray-400 transition-transform duration-200" />

@@ -47,7 +47,7 @@ export const PatientHistory: IDoctorPatientDetails[] = [
       {
         symptoms: "Fever, cough, sore throat",
         diseases: "Common cold",
-        description:
+        sessionDescription:
           "Common cold is a viral infection of your nose and throat (upper respiratory tract). It's usually harmless, although it might not feel that way. Many types of viruses can cause a common cold.",
         stage: "Maintenance Stage",
         medicine: [
@@ -81,7 +81,7 @@ export const PatientHistory: IDoctorPatientDetails[] = [
       {
         symptoms: "Fever, cough, sore throat",
         diseases: "Fever",
-        description:
+        sessionDescription:
           "Common cold is a viral infection of your nose and throat (upper respiratory tract). It's usually harmless, although it might not feel that way. Many types of viruses can cause a common cold.",
         stage: "Maintenance Stage",
         medicine: [
@@ -115,7 +115,7 @@ export const PatientHistory: IDoctorPatientDetails[] = [
       {
         symptoms: "Fever, cough, sore throat",
         diseases: "Rabies",
-        description:
+        sessionDescription:
           "Common cold is a viral infection of your nose and throat (upper respiratory tract). It's usually harmless, although it might not feel that way. Many types of viruses can cause a common cold.",
         stage: "Maintenance Stage",
         medicine: [
