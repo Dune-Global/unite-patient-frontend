@@ -64,8 +64,8 @@ export default function AvailabilityCard() {
         });
       } else {
         toast({
-          title: "Password change failed",
-          description: "Please try again",
+          title: "Something went wrong!",
+          description: res.data.message,
           variant: "destructive",
         });
       }

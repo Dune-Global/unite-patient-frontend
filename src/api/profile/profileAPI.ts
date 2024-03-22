@@ -4,9 +4,8 @@ import {
   UPDATE_PATIENT_URL,
   UPDATE_PASSWORD_URL,
   VERIFY_EMAIL_URL,
-  LIST_APPOINTMENTS_URL,
-  GET_APPOINTMENT_URL,
-  DELETE_APPOINTMENT_URL
+  UPLOAD_FILES_URL,
+  DELETE_FILE_URL,
 } from "@/api/_url/profile/url";
 import { handleLoginResponse } from "@/helpers/auth/authHelper";
 import CustomAxios from "@/utils/axiosInstance";
@@ -26,7 +25,7 @@ export const updatePatient = async (values: {
   hereditaryDiseases: string;
 }) => {
   try {
-    const response = await axios({
+    const response = await CustomAxios({
       method: "PUT",
       baseURL: BACKEND_BASE_URL,
       url: UPDATE_PATIENT_URL,
@@ -39,17 +38,17 @@ export const updatePatient = async (values: {
 };
 
 export const updatePassword = async (values: {
-  email: string;
-  password: string;
+  oldPassword: string;
+  newPassword: string;
 }) => {
   try {
-    const response = await axios({
+    const response = await CustomAxios({
       method: "PATCH",
       baseURL: BACKEND_BASE_URL,
       url: UPDATE_PASSWORD_URL,
       data: {
-        email: values.email,
-        password: values.password,
+        oldPassword: values.oldPassword,
+        newPassword: values.newPassword,
       },
     });
     handleLoginResponse(response);
@@ -72,17 +71,12 @@ export const verifyEmail  = async () => {
   }
 };
 
-export const listAppointments  = async (values: {
-    appointmentNumber: number;
-  }) => {
+export const uploadFiles  = async () => {
   try {
     const response = await axios({
-      method: "GET",
+      method: "POST",
       baseURL: BACKEND_BASE_URL,
-      url: LIST_APPOINTMENTS_URL,
-     data: {
-        appointmentNumber: values.appointmentNumber,
-     } ,
+      url: UPLOAD_FILES_URL,
     });
     return response;
   } catch (error: any) {
@@ -90,48 +84,14 @@ export const listAppointments  = async (values: {
   }
 };
 
-export const getAppointments  = async (values: {
-    appointmentNumber: number;
-  }) => {
+export const deleteFiles  = async (values: {
+  imageUrl: string;
+}) => {
   try {
     const response = await axios({
-      method: "GET",
+      method: "POST",
       baseURL: BACKEND_BASE_URL,
-      url: GET_APPOINTMENT_URL,
-     data: {
-        appointmentNumber: values.appointmentNumber,
-     } ,
-    });
-    return response;
-  } catch (error: any) {
-    return error.response;
-  }
-};
-
-export const deleteAppointment  = async (values: {
-    appointmentNumber: number;
-  }) => {
-  try {
-    const response = await axios({
-      method: "GET",
-      baseURL: BACKEND_BASE_URL,
-      url: DELETE_APPOINTMENT_URL,
-     data: {
-        appointmentNumber: values.appointmentNumber,
-     } ,
-    });
-    return response;
-  } catch (error: any) {
-    return error.response;
-  }
-};
-
-export const uploadFiles  = async (values: {}) => {
-  try {
-    const response = await axios({
-      method: "GET",
-      baseURL: BACKEND_BASE_URL,
-      url: GET_APPOINTMENT_URL,
+      url: DELETE_FILE_URL,
      data: values,
     });
     return response;
