@@ -2,6 +2,12 @@
 
 import React from "react";
 import { Button } from "../common/Button";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 
 interface Report {
   id: string;
@@ -16,12 +22,12 @@ interface ReportCardProps {
 const ReportCard: React.FC<ReportCardProps> = ({ reports }) => {
   return (
     <div className="max-w-[450px] mt-4">
-        <div className="flex items-center justify-between">
-            <div className="text-lg font-medium py-4">Reports</div>
-            <div>
-                <Button size="sm">Add New Report</Button>
-            </div>
+      <div className="flex items-center justify-between">
+        <div className="text-lg font-medium py-4">Reports</div>
+        <div>
+          <Button size="sm">Add New Report</Button>
         </div>
+      </div>
       {/* static */}
       <div className="flex py-4 px-6 justify-between  items-center bg-ugray-100 font-medium text-ugray-400 rounded-lg">
         <span>Report Name</span>
@@ -29,15 +35,22 @@ const ReportCard: React.FC<ReportCardProps> = ({ reports }) => {
       </div>
 
       {/* dynamic */}
-      {reports.map((report) => (
-        <div
-          key={report.id}
-          className="flex py-4 px-6 my-2 text-sm justify-between items-center bg-ugray-0 text-ugray-400 rounded-lg"
-        >
-          <span>{report.name}</span>
-          <span>{report.date}</span>
-        </div>
-      ))}
+      <ContextMenu>
+        <ContextMenuTrigger>
+          {reports.map((report) => (
+            <div
+              key={report.id}
+              className="flex py-4 px-6 my-2 text-sm justify-between items-center bg-ugray-0 text-ugray-400 rounded-lg"
+            >
+              <span>{report.name}</span>
+              <span>{report.date}</span>
+            </div>
+          ))}
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+          <ContextMenuItem className="text-ured-400">Remove Report</ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
     </div>
   );
 };
