@@ -32,7 +32,7 @@ import { updatePatient, verifyEmail } from "@/api/profile/profileAPI";
 import { getUser } from "@/utils/getUser";
 import { IAccessToken } from "@/types/jwt";
 
-let user:IAccessToken;
+let user: IAccessToken;
 const tempUser = getUser();
 if (tempUser !== undefined && tempUser !== null) {
   user = tempUser;
@@ -76,15 +76,13 @@ export default function EditProfileCard() {
 
   const handleVerifyEmail = async () => {
     try {
-      const res:any = await verifyEmail();
+      const res: any = await verifyEmail();
       console.log(res);
 
       if (res.status === 200) {
         toast({
           title: "Verification Email Sent",
-          description: (
-            "Check your email for the verification link"
-          ),
+          description: "Check your email for the verification link",
         });
       } else {
         toast({
@@ -111,18 +109,12 @@ export default function EditProfileCard() {
       if (res.status === 200) {
         toast({
           title: "Patient Updated Successfully",
-          description: (
-            <pre className="bg-ugray-900 mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-              <code className=" text-ugray-0">
-                {JSON.stringify(values, null, 2)}
-              </code>
-            </pre>
-          ),
+          description: "Your details updated successfully",
         });
       } else {
         toast({
-          title: "Patient update failed",
-          description: "Please try again",
+          title: "Something went wrong!",
+          description: res.data.message,
           variant: "destructive",
         });
       }
@@ -136,26 +128,10 @@ export default function EditProfileCard() {
     }
   };
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    toast({
-      title: "Saved changes successfully!",
-      description: (
-        <pre className="bg-ugray-900 mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className=" text-ugray-0">
-            {JSON.stringify(values, null, 2)}
-          </code>
-        </pre>
-      ),
-    });
-  }
-
   return (
     <div>
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-3 px-2 mb-2 "
-        >
+        <form className="space-y-3 px-2 mb-2 ">
           {ProfileInfo.map((profile) => (
             <div className="space-y-5 snap-y flex flex-col" key={profile.id}>
               <div className="flex flex-col lg:flex-row gap-4">

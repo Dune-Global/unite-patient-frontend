@@ -2,15 +2,11 @@
 
 import { ProfileInfo } from "@/data/mock/profile-info";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import React from "react"
+import React from "react";
 import PatientCard from "@/components/profile/PatientCard";
 import ChangePasswordCard from "@/components/profile/ChangePasswordCard";
 import EditProfileCard from "@/components/profile/EditProfileCard";
 import ReportsSection from "@/components/profile/ReportsSection";
-import BookAppointmentCard from "@/components/profile/BookAppointmentCard";
-import { z } from "zod";
-import { updatePatient } from "@/api/profile/profileAPI";
-import { toast } from "@/components/ui/use-toast";
 
 export default function Settings() {
   const reports = [
@@ -29,20 +25,20 @@ export default function Settings() {
           {ProfileInfo.map((profile) => (
             <div key={profile.id}>
               <div>
-              <PatientCard
-                image={profile.image}
-                name={profile.fName + " " + profile.lName}
-                gender={profile.gender}
-                age={profile.age}
-                email={profile.email}
-                contactNumber={profile.contactNumber}
-                weight={profile.weight}
-                height={profile.height}
-                bloodGroup={profile.bloodGroup}
-                bloodPressure={profile.bloodPressure}
-                allergies={profile.allergies}
-                hereditaryDiseases={profile.hereditaryDiseases}
-              />
+                <PatientCard
+                  image={profile.image}
+                  name={profile.fName + " " + profile.lName}
+                  gender={profile.gender}
+                  age={profile.age}
+                  email={profile.email}
+                  contactNumber={profile.contactNumber}
+                  weight={profile.weight}
+                  height={profile.height}
+                  bloodGroup={profile.bloodGroup}
+                  bloodPressure={profile.bloodPressure}
+                  allergies={profile.allergies}
+                  hereditaryDiseases={profile.hereditaryDiseases}
+                />
               </div>
               <div>
                 <ReportsSection reports={reports} />
@@ -51,12 +47,9 @@ export default function Settings() {
           ))}
         </div>
         <div className="w-full">
-          <Tabs defaultValue="book-appointment" className="w-full">
+          <Tabs defaultValue="edit-profile" className="w-full">
             <TabsList className="bg-ugray-0 py-6 mb-3">
               <div className="flex gap-6 px-6">
-                <div>
-                  <TabsTrigger value="book-appointment">Book an Appointment</TabsTrigger>
-                </div>
                 <div>
                   <TabsTrigger value="edit-profile">Edit Profile</TabsTrigger>
                 </div>
@@ -67,22 +60,17 @@ export default function Settings() {
                 </div>
               </div>
             </TabsList>
-            <TabsContent value="book-appointment" className="w-full">
-              <div className="bg-ugray-0 p-4 rounded-lg shadow-sm">
-                <BookAppointmentCard />
-              </div>
-            </TabsContent>
             <TabsContent
               value="edit-profile"
               className="bg-ugray-0 p-4 rounded-lg shadow-sm"
             >
-              <EditProfileCard /> 
+              <EditProfileCard />
             </TabsContent>
             <TabsContent
               value="change-password"
               className="bg-ugray-0 p-4 rounded-lg shadow-sm"
             >
-              <ChangePasswordCard /> 
+              <ChangePasswordCard />
             </TabsContent>
           </Tabs>
         </div>
