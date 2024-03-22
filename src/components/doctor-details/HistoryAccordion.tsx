@@ -11,18 +11,22 @@ import React from "react";
 import { Button } from "../common/Button";
 import { IAccordionData } from "@/types/accordion-data";
 import Progress from "./ProgressBar";
+import {
+  IDoctorPatientDetails,
+  Prescription,
+} from "@/types/doctor-patient-details";
 
-const HistoryAccordion: React.FC<IAccordionData> = ({
-  diseaseDescription,
-  diseaseName,
-  date,
-  symptoms,
-  status,
-  isLastItem = false, // Default to false if not provided
+interface HistoryAccordionProps {
+  details: Prescription;
+  isLastItem?: boolean;
+}
+const HistoryAccordion: React.FC<HistoryAccordionProps> = ({
+  details,
+  isLastItem = false,
 }) => {
-  return (
-    // <div className="border-l-2 border-dashed border-ugray-200 relative pb-10 pl-4">
+  console.log("\n\n\nHistoryAccordion props:", details);
 
+  return (
     <div
       className={` relative pl-4 ${
         !isLastItem && "border-l-2 border-dashed border-ugray-200  pb-10 "
@@ -33,7 +37,7 @@ const HistoryAccordion: React.FC<IAccordionData> = ({
           !isLastItem ? "-left-2" : " -left-[6px] "
         } `}
       />
-      <div className="mb-3 pl-4 ">{date}</div>
+      <div className="mb-3 pl-4 ">{details.sessionDate}</div>
       <Accordion type="multiple" className="flex flex-col gap-4 mx-4">
         <AccordionItem
           value="item-1"
@@ -42,10 +46,10 @@ const HistoryAccordion: React.FC<IAccordionData> = ({
           <AccordionTrigger className="flex">
             <div className="flex flex-col items-start gap-3 justify-between w-full">
               <span className="text-ugray-900 text-left text-lg font-semibold">
-                {diseaseName}
+                {details.diseases}
               </span>
               <span className="text-ugray-200 sm:text-left text-justify text-sm sm:text-base">
-                {diseaseDescription}
+                {details.description}
               </span>
               <div className="md:mb-14 mt-6 max-w-[960px] w-full md:px-10 xl:px-16">
                 <Progress currentStep={2} />
@@ -58,11 +62,13 @@ const HistoryAccordion: React.FC<IAccordionData> = ({
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
               <div className="flex flex-col py-3 sm:p-3 gap-2">
                 <span className="text-ugray-200">Symptoms</span>
-                <span className="text-justify sm:text-left">{symptoms}</span>
+                <span className="text-justify sm:text-left">
+                  {details.symptoms}
+                </span>
               </div>
               <div className="flex flex-col py-3 sm:p-3 gap-2">
                 <span className="text-ugray-200">Status</span>
-                <span>{status}</span>
+                <span>{details.stage}</span>
               </div>
               <div className="mt-4 sm:ml-0 sm:mt-0">
                 <Button variant="default" size="sm">
