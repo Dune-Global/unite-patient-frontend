@@ -5,7 +5,7 @@ import { IMedicalInformation } from "@/types/medical-information";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
-export const columns: ColumnDef<IMedicalInformation>[] = [
+export const connectedDoctorsColumns: ColumnDef<IMedicalInformation>[] = [
   {
     id: "select",
     header: ({ table }) => (

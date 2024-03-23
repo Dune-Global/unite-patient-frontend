@@ -1,5 +1,6 @@
 export type IMedicalReports = {
   id: string;
-  reportName: string;
-  date: string;
+  reportUrl: string;
+  reportType: string;
+  tookDate: string;
 };
