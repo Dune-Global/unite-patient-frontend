@@ -18,7 +18,6 @@ export default function DoctorsList() {
   useEffect(() => {
     getDoctorDetailsOfPatients()
       .then((res) => {
-        console.log(res.data);
         dispatch(setDoctorList(res.data));
         setLoading(false);
       })
