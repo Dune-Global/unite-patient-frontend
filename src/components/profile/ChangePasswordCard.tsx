@@ -54,13 +54,7 @@ export default function AvailabilityCard() {
       if (res.status === 200) {
         toast({
           title: "Password Changed Successfully",
-          description: (
-            <pre className="bg-ugray-900 mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-              <code className=" text-ugray-0">
-                {JSON.stringify(values, null, 2)}
-              </code>
-            </pre>
-          ),
+          description: ("You can now login with your new password"),
         });
       } else {
         toast({
@@ -78,19 +72,6 @@ export default function AvailabilityCard() {
       });
     }
   };
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    toast({
-      title: "Availability added successfully!",
-      description: (
-        <pre className="bg-ugray-900 mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className=" text-ugray-0">
-            {JSON.stringify(values, null, 2)}
-          </code>
-        </pre>
-      ),
-    });
-  }
 
   const [date, setDate] = React.useState<Date | undefined>(new Date());
 
@@ -114,7 +95,7 @@ export default function AvailabilityCard() {
     <div>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={handleChangePassword}
           className="space-y-3 px-2 mb-2 "
         >
           <div className="space-y-5 snap-y flex flex-col">
@@ -238,7 +219,7 @@ export default function AvailabilityCard() {
               </div>
             </div>
             <div>
-              <Button type="submit" size="lg" onClick={handleChangePassword}>
+              <Button type="submit" size="lg">
                 Change Password
               </Button>
             </div>
