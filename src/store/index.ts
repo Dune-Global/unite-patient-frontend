@@ -1,13 +1,13 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 import { setupListeners } from "@reduxjs/toolkit/query/react";
-import pageReducer from "./reducers/page-reducer";
 import authReducer from "./reducers/auth-reducer";
+import doctorReducer from "./reducers/doctor-reducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  pageState: pageReducer,
   authState: authReducer,
+  doctorState: doctorReducer,
 });
 
 export const store = configureStore({

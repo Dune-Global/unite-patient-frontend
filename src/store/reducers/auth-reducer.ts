@@ -10,7 +10,6 @@ interface AuthState {
   refreshToken: string;
   accessToken: string;
   imageUrl: string;
-  designation: string;
 }
 
 const initialState: AuthState = {
@@ -23,7 +22,6 @@ const initialState: AuthState = {
   refreshToken: "",
   accessToken: "",
   imageUrl: "",
-  designation: "",
 };
 
 const authStateSlice = createSlice({
@@ -57,9 +55,7 @@ const authStateSlice = createSlice({
     setImageUrl(state, action: PayloadAction<string>) {
       state.imageUrl = action.payload;
     },
-    setDesignation(state, action: PayloadAction<string>) {
-      state.designation = action.payload;
-    },
+    
   },
 });
 
@@ -68,7 +64,6 @@ export const {
   setIsEmailVerified,
   setDoctorId,
   setAccessToken,
-  setDesignation,
   setImageUrl,
   setRefreshToken,
   setEmail,

@@ -19,7 +19,6 @@ import React, { useState } from "react";
 import { sideMenuItems } from "@/data/side-menu/side-menu";
 import Image from "next/image";
 
-import { setPageName } from "@/store/reducers/page-reducer";
 import Container from "../Container";
 type Props = {};
 
@@ -29,9 +28,6 @@ const SideMenu = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const pathName = usePathname();
 
-  const handlePageName = (pathname: string) => {
-    dispatch(setPageName(pathname));
-  };
 
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -86,7 +82,6 @@ const SideMenu = (props: Props) => {
         <div className="flex flex-col mt-7">
           {sideMenuItems.map((item) => (
             <Link
-              onClick={() => handlePageName(pathName)}
               key={item.id}
               href={item.path}
               className="py-[1px]"
