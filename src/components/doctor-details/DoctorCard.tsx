@@ -77,7 +77,7 @@ const DoctorCard: React.FC<IDoctorCard> = ({
                 Show Medical History
               </Button>
             </UniteModal>
-            <UniteModal
+            {/* <UniteModal
               title="Show Medical Reports"
               content={
                 <MedicalReportsDataTable
@@ -94,7 +94,7 @@ const DoctorCard: React.FC<IDoctorCard> = ({
               <Button variant="outline" size="sm" className="px-8">
                 Show Reports
               </Button>
-            </UniteModal>
+            </UniteModal> */}
           </div>
         </div>
       </div>

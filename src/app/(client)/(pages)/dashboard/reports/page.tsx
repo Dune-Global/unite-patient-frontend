@@ -14,7 +14,7 @@ const ReportsPage = () => {
     const getAllMedicalReportsActionHandler = async () => {
       try {
         const res = await getAllReports();
-        if (res && res.data && res.data.reports) {
+        if (res?.data?.reports) {
           setReportsData(res.data.reports);
         } else {
           console.error("Unexpected response from getAllReports:", res);
