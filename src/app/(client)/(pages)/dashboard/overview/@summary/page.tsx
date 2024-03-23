@@ -1,7 +1,17 @@
+"use client";
+
 import SummaryCard from "@/components/overview/summary/summary-card";
+import { RootState } from "@/store";
 import { Calendar, User, MessageSquareMoreIcon, Clock } from "lucide-react";
+import { useSelector } from "react-redux";
 
 export default function Summary() {
+  const doctorsList = useSelector(
+    (state: RootState) => state.doctorState.doctorList
+  );
+
+  const doctorsCount = doctorsList.length;
+
   return (
     <div className="mt-6 flex flex-row flex-wrap justify-between">
       <SummaryCard
@@ -14,7 +24,7 @@ export default function Summary() {
         cardColor="bg-upink-400"
         description="Total Doctors"
         Icon={User}
-        value="05"
+        value={doctorsCount.toString()}
       />
       <SummaryCard
         cardColor="bg-uorange-600"

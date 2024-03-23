@@ -27,6 +27,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "commitlint.config.js"
-  ],
+, "src/app/(client)/(pages)/dashboard/overview/@bookAnAppoinment/page.tsx"  ],
   "exclude": ["node_modules"]
 }

@@ -27,10 +27,6 @@ CustomAxios.interceptors.response.use(
         },
       })
         .then((response) => {
-          localStorage.setItem(
-            "REFRESHTOKEN",
-            `Bearer ${response.data?.refreshToken}`
-          );
           sessionStorage.setItem(
             "ACCESSTOKEN",
             `Bearer ${response.data?.accessToken}`
@@ -45,8 +41,8 @@ CustomAxios.interceptors.response.use(
           console.log(error);
         });
     } else if (status === 403) {
-      sessionStorage.clear();
-      localStorage.clear();
+      // sessionStorage.clear();
+      // localStorage.clear();
       window.location.replace("/sign-in");
     }
     return Promise.resolve(err);

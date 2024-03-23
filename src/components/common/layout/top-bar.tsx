@@ -17,7 +17,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { accessToken } from "@/api/auth/authAPI";
 import {
-  setDesignation,
   setDoctorId,
   setEmail,
   setFirstName,
@@ -30,7 +29,7 @@ import {
 export default function TopBar() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { isEmailVerified,isAuth, designation, email, firstName, lastName, imageUrl } =
+  const { isEmailVerified, isAuth, email, firstName, lastName, imageUrl } =
     useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
@@ -42,9 +41,9 @@ export default function TopBar() {
     }
 
     if (!myAccessToken) {
-      accessToken(myRefreshToken).then((response) => {
-        const { accessToken } = response.data;
-        sessionStorage.setItem("ACCESSTOKEN", `Bearer ${accessToken}`);
+      accessToken(myRefreshToken).then((response:any) => {
+        const newAccessToken = response.data.accessToken;
+        sessionStorage.setItem("ACCESSTOKEN", `Bearer ${newAccessToken}`);
       });
     }
 
@@ -54,7 +53,6 @@ export default function TopBar() {
     }
     console.log(user);
     dispatch(setIsAuth(true));
-    dispatch(setDesignation(user.designation));
     dispatch(setFirstName(user.firstName));
     dispatch(setLastName(user.lastName));
     dispatch(setEmail(user.email));
@@ -83,25 +81,23 @@ export default function TopBar() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <Avatar>
-              <AvatarImage src={imageUrl}/>
-              
+              <AvatarImage src={imageUrl} />
             </Avatar>
           </div>
           <div className="flex flex-col items-start justify-start">
-            <h3 className="text-sm font-medium">{firstName} {lastName}</h3>
+            <h3 className="text-sm font-medium">
+              {firstName} {lastName}
+            </h3>
             <DropdownMenu>
               <DropdownMenuTrigger className="text-sm opacity-70 line-clamp-1">
-                {designation}
+                Patient
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Billing</DropdownMenuItem>
-                <DropdownMenuItem>Team</DropdownMenuItem>
-                <DropdownMenuItem>Subscription</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogOut}>Log out</DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogOut}>
+                  Log out
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
