@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -28,11 +28,15 @@ import { ProfileInfo } from "@/data/mock/profile-info";
 import { CalendarIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
-import { updatePatient, verifyEmail } from "@/api/profile/profileAPI";
+import {
+  getUserDetails,
+  updatePatient,
+  verifyEmail,
+} from "@/api/profile/profileAPI";
 import { getUser } from "@/utils/getUser";
 import { IAccessToken } from "@/types/jwt";
 
-let user: IAccessToken;
+let user: IAccessToken | undefined;
 const tempUser = getUser();
 if (tempUser !== undefined && tempUser !== null) {
   user = tempUser;
@@ -57,12 +61,42 @@ const formBaseStyles = {
 };
 
 export default function EditProfileCard() {
+  type PatientType = {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    dateOfBirth: string;
+    gender: string;
+    imgUrl: string;
+    isEmailVerified: boolean;
+    mobile?: number;
+    height?: number;
+    weight?: number;
+    bloodGroup?: string;
+    allergies?: string;
+    hereditaryDiseases?: string;
+  };
+
+  const [patient, setPatient] = useState<PatientType | null>(null);
+
+if (user) {
+    const res: any = getUserDetails(user?.id);
+    if (res.status === 200) {
+        setPatient(res.data);
+    } else if (res.data) {
+        console.log(res.data.message);
+    } else {
+        console.log('No message available');
+    }
+}
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
+      firstName: patient?.firstName || "",
+      lastName: "",
+      email: "",
       phoneNumber: "",
       dateOfBirth: "",
       gender: "",
@@ -73,6 +107,24 @@ export default function EditProfileCard() {
       allergies: "",
     },
   });
+
+  // useEffect(() => {
+  //   if (user) {
+  //     getUserDetails(user.id)
+  //       .then((res: any) => {
+  //         if (res.status === 200) {
+  //           setPatient(res.data);
+  //           console.log(res.data);
+  //           console.log("res patient : " , patient);
+  //         } else {
+  //           console.log(res.data.message);
+  //         }
+  //       })
+  //       .catch((error: any) => {
+  //         console.error('There has been a problem with your fetch operation:', error);
+  //       });
+  //   }
+  // }, [user]);
 
   const handleVerifyEmail = async () => {
     try {
@@ -194,7 +246,7 @@ export default function EditProfileCard() {
                           />
                         </FormControl>
 
-                        {user.isEmailVerified ? null : (
+                        {patient?.isEmailVerified ? null : (
                           <Button
                             size="sm"
                             className="absolute top-0 right-2 text-ugray-0 bg-ublue-200"

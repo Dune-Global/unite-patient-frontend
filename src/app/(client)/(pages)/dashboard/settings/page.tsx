@@ -6,7 +6,6 @@ import React from "react";
 import PatientCard from "@/components/profile/PatientCard";
 import ChangePasswordCard from "@/components/profile/ChangePasswordCard";
 import EditProfileCard from "@/components/profile/EditProfileCard";
-import ReportsSection from "@/components/profile/ReportsSection";
 
 export default function Settings() {
   const reports = [
@@ -39,9 +38,6 @@ export default function Settings() {
                   allergies={profile.allergies}
                   hereditaryDiseases={profile.hereditaryDiseases}
                 />
-              </div>
-              <div>
-                <ReportsSection reports={reports} />
               </div>
             </div>
           ))}
