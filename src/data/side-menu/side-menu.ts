@@ -4,7 +4,8 @@ import {
   Settings,
   LayoutGridIcon,
   Calendar,
-  MessageSquareMore
+  MessageSquareMore,
+  ClipboardMinus,
 } from "lucide-react";
 
 export const sideMenuItems: SideMenuItems[] = [
@@ -28,12 +29,18 @@ export const sideMenuItems: SideMenuItems[] = [
   },
   {
     id: 4,
+    path: "/dashboard/reports",
+    icon: ClipboardMinus,
+    description: "Reports",
+  },
+  {
+    id: 5,
     path: "/dashboard/messages",
     icon: MessageSquareMore,
     description: "Messages",
   },
   {
-    id: 5,
+    id: 6,
     path: "/dashboard/settings",
     icon: Settings,
     description: "Settings",
