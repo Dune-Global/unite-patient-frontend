@@ -7,7 +7,7 @@ import { UniteModal } from "../common/UniteModal";
 import { MedicalInformationDataTable } from "./medical-history-table/data-table";
 import { IMedicalInformation } from "@/types/medical-information";
 import { getAllMedicalInformation } from "@/data/mock/medical-information";
-import { columns } from "./medical-history-table/columns";
+import { connectedDoctorsColumns } from "./medical-history-table/columns";
 import { MedicalReportsDataTable } from "./reports-table/data-table";
 import { IMedicalReports } from "@/types/medical-reports";
 import { getAllMedicalReports } from "@/data/mock/medical-reports";
@@ -63,7 +63,7 @@ const DoctorCard: React.FC<IDoctorCard> = ({
               title="Show Medical Information"
               content={
                 <MedicalInformationDataTable
-                  columns={columns}
+                  columns={connectedDoctorsColumns}
                   data={infoData}
                 />
               }

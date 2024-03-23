@@ -3,7 +3,17 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { IMedicalReports } from "@/types/medical-reports";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/common/Button";
 
 export const reportColumns: ColumnDef<IMedicalReports>[] = [
   {
@@ -29,30 +39,23 @@ export const reportColumns: ColumnDef<IMedicalReports>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "reportName",
-    header: "Doctor Name",
+    accessorKey: "reportType",
+    header: "Report Name",
     cell: ({ row }) => {
       return (
         <div className="flex flex-col justify-center lg:flex-row lg:justify-start gap-2 items-center">
-          {/* <div>
-            <img
-              src={`https://ui-avatars.com/api/?name=${row.original.reportName}`}
-              alt="patient"
-              className="w-8 h-8 rounded-full"
-            />
-          </div> */}
-          <div>{row.original.reportName}</div>
+          <div>{row.original.reportType}</div>
         </div>
       );
     },
   },
 
   {
-    accessorKey: "date",
+    accessorKey: "tookDate",
     header: ({ column }) => {
       return (
         <div className="flex items-center">
-          <div>Specialty</div>
+          <div>Date</div>
           <button
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
             className="flex items-start"
@@ -63,4 +66,33 @@ export const reportColumns: ColumnDef<IMedicalReports>[] = [
       );
     },
   },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const payment = row.original;
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="border-ugray-600 h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4 text-ugray-600" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(payment.id)}
+            >
+              View report
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Permissions</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
 ];
+  

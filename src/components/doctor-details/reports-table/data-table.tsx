@@ -30,7 +30,12 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { UniteModal } from "@/components/common/UniteModal";
+import { MedicalInformationDataTable } from "../medical-history-table/data-table";
+import { IMedicalInformation } from "@/types/medical-information";
+import { getAllMedicalInformation } from "@/data/mock/medical-information";
+import { connectedDoctorsColumns } from "../medical-history-table/columns";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -44,6 +49,11 @@ export function MedicalReportsDataTable<TData, TValue>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState<any>(null);
+  const [connectedDoctors, setConnectedDoctors] = useState<
+    IMedicalInformation[]
+  >([]);
 
   const table = useReactTable({
     data,
@@ -62,16 +72,29 @@ export function MedicalReportsDataTable<TData, TValue>({
     },
   });
 
+  useEffect(() => {
+    const getAllMedicalInformationActionHandler = async () => {
+      const data = await getAllMedicalInformation();
+      setConnectedDoctors(data);
+    };
+    getAllMedicalInformationActionHandler();
+  }, []);
+
+  const handleRowClick = (rowData: any) => {
+    setSelectedRow(rowData);
+    setIsModalOpen(true);
+  };
+
   return (
     <>
       <div className="flex items-center py-4 gap-3">
         <Input
           placeholder="Filter report by name..."
           value={
-            (table.getColumn("reportName")?.getFilterValue() as string) ?? ""
+            (table.getColumn("reportType")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
-            table.getColumn("reportName")?.setFilterValue(event.target.value)
+            table.getColumn("reportType")?.setFilterValue(event.target.value)
           }
           className="max-w-sm border-ugray-200"
         />
@@ -129,6 +152,7 @@ export function MedicalReportsDataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   className="bg-ugray-0 border-ugray-50 border-y-8"
+                  onClick={() => handleRowClick(row.original)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -153,6 +177,28 @@ export function MedicalReportsDataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+
+      <UniteModal
+        title={selectedRow ? selectedRow.reportType : ""}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        content={
+          <div className="grid gap-4">
+            <div>
+              <div className="text-ugray-400">
+                Date: {selectedRow?.tookDate}
+              </div>
+            </div>
+            <div>
+              <MedicalInformationDataTable
+                columns={connectedDoctorsColumns}
+                data={connectedDoctors}
+              />
+            </div>
+          </div>
+        }
+      />
+
       <div className="flex items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"
