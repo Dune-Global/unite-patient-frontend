@@ -4,8 +4,7 @@ import {
   UPDATE_PATIENT_URL,
   UPDATE_PASSWORD_URL,
   VERIFY_EMAIL_URL,
-  UPLOAD_FILES_URL,
-  DELETE_FILE_URL,
+  GET_PATIENT_URL,
 } from "@/api/_url/profile/url";
 import { handleLoginResponse } from "@/helpers/auth/authHelper";
 import CustomAxios from "@/utils/axiosInstance";
@@ -71,31 +70,16 @@ export const verifyEmail  = async () => {
   }
 };
 
-export const uploadFiles  = async () => {
+export const getUserDetails = async (patientId: string) => {
   try {
-    const response = await axios({
-      method: "POST",
+    const response = await CustomAxios({
+      method: "GET",
       baseURL: BACKEND_BASE_URL,
-      url: UPLOAD_FILES_URL,
-    });
-    return response;
-  } catch (error: any) {
-    return error.response;
-  }
-};
+      url: `${GET_PATIENT_URL}${patientId}`,
 
-export const deleteFiles  = async (values: {
-  imageUrl: string;
-}) => {
-  try {
-    const response = await axios({
-      method: "POST",
-      baseURL: BACKEND_BASE_URL,
-      url: DELETE_FILE_URL,
-     data: values,
     });
     return response;
   } catch (error: any) {
     return error.response;
   }
-};
+}
