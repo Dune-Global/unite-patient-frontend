@@ -16,16 +16,16 @@ const HistoryPermissionTable: React.FC<HistoryPermissionTableProps> = ({
 }) => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
-  useEffect(() => {
-    // Reset selectedRows to reflect the current permissions
-    const newSelectedRows = data.reduce((acc: string[], doctor) => {
-      if (doctor.allowed) {
-        acc.push(doctor.doctorId);
-      }
-      return acc;
-    }, []);
-    setSelectedRows(newSelectedRows);
-  }, [data, updateReportAccess, setSelectedRows]);
+  // useEffect(() => {
+  //   // Reset selectedRows to reflect the current permissions
+  //   const newSelectedRows = data.reduce((acc: string[], doctor) => {
+  //     if (doctor.allowed) {
+  //       acc.push(doctor.doctorId);
+  //     }
+  //     return acc;
+  //   }, []);
+  //   setSelectedRows(newSelectedRows);
+  // }, [data, updateReportAccess, setSelectedRows]);
 
   const toggleRow = (doctorId: string) => {
     setSelectedRows((prevSelectedRows) => {

@@ -22,9 +22,7 @@ const DoctorCard: React.FC<IDoctorCard> = ({
   _id,
 }) => {
   const params = useParams();
-  const sessionId = Array.isArray(params.sessionId)
-    ? params.sessionId[0]
-    : params.sessionId;
+  const sessionId = Array.isArray(params.id) ? params.id[0] : params.id;
 
   const [infoData, setInfoData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,12 +42,8 @@ const DoctorCard: React.FC<IDoctorCard> = ({
         );
       }
     };
-    if (_id) getDoctorListAndAccessInfoActionHandler(_id);
+    getDoctorListAndAccessInfoActionHandler(sessionId);
   }, []);
-
-  const handleShowHistory = () => {
-    setIsModalOpen(true);
-  };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -69,7 +63,6 @@ const DoctorCard: React.FC<IDoctorCard> = ({
           <div className="flex flex-col gap-4">
             <UniteModal
               title="Show Medical Information"
-              isOpen={isModalOpen}
               onClose={handleCloseModal}
               content={
                 <HistoryPermissionTable
@@ -77,11 +70,6 @@ const DoctorCard: React.FC<IDoctorCard> = ({
                   isModalOpen={isModalOpen}
                   patientSessionId={sessionId}
                 />
-              }
-              footer={
-                <Button variant="default" size="lg">
-                  Save Changes
-                </Button>
               }
             >
               <Button variant="default" size="sm">
