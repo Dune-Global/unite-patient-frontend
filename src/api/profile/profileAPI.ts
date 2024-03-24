@@ -10,18 +10,20 @@ import { handleLoginResponse } from "@/helpers/auth/authHelper";
 import CustomAxios from "@/utils/axiosInstance";
 
 export const updatePatient = async (values: {
-  firstName: string;
-  lastName: string;
-  email: string;
-  dateOfBirth: string;
-  gender: string;
-  imgUrl: string;
-  mobile: string;
-  weight: number;
-  height: number;
-  bloodGroup: string;
-  allergies: string;
-  hereditaryDiseases: string;
+  editProfile: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    dateOfBirth: Date;
+    gender: string;
+    imgUrl: string;
+    mobile: string;
+    weight: number | null;
+    height: number | null;
+    bloodGroup: string;
+    allergies: string;
+    hereditaryDiseases: string;
+  };
 }) => {
   try {
     const response = await CustomAxios({
@@ -30,6 +32,7 @@ export const updatePatient = async (values: {
       url: UPDATE_PATIENT_URL,
       data: values,
     });
+    console.log("hellooo", response);
     return response;
   } catch (error: any) {
     return error.response;
@@ -57,7 +60,7 @@ export const updatePassword = async (values: {
   }
 };
 
-export const verifyEmail  = async () => {
+export const verifyEmail = async () => {
   try {
     const response = await CustomAxios({
       method: "GET",
@@ -76,10 +79,9 @@ export const getUserDetails = async (patientId: string) => {
       method: "GET",
       baseURL: BACKEND_BASE_URL,
       url: `${GET_PATIENT_URL}${patientId}`,
-
     });
     return response;
   } catch (error: any) {
     return error.response;
   }
-}
+};

@@ -6,25 +6,32 @@ import ReportsTableHeading from "./report-table-heading";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { DoctorCardSkeleton } from "../doctors/doctor-card-skeleton";
+import { getAllReports } from "@/api/reports/reportsAPI";
+import { setReportList } from "@/store/reducers/report-reducer";
 
 export default function ReportsSection() {
   const dispatch = useDispatch();
   const reportsList = useSelector(
     (state: RootState) => state.reportsState.reportList
   );
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     try {
-      // TODO: Fetch reports from the API
-      // TODO: Dispatch the fetched reports to the store
-      // TODO: Set the loading state to false
+      getAllReports()
+      .then((response:any) => {
+        dispatch(setReportList(response.data.reports))
+        setLoading(true);
+      }
+      )
+      .catch((error) => {
+        console.error(error);
+      });
     } catch (error) {
       console.error(error);
     }
   }, []);
 
-  // Mee thamaa atakatu tika hutto
   if (!loading) {
     return (
       <div className="bg-ugray-0 mt-6 rounded-lg p-4">
@@ -39,18 +46,19 @@ export default function ReportsSection() {
     <div>
       <ReportsTableHeading />
 
-      {/* Yasith this is the component that you need to map */}
       {reportsList.length > 0 ? (
         reportsList.map((report: any) => (
           <ReportCard
-            key={report.id}
-            reportName={report.reportName}
-            // Date eka normal ena vidihatama pass karahn methanata
-            date={report.date}
+            key={report._id}
+            reportName={report.reportType}
+            date={report.tookDate}
+            reportUrl={report.reportUrl}
           />
         ))
       ) : (
-        <div className="text-center text-ugray-400 my-10">No Reports available</div>
+        <div className="text-center text-ugray-400 my-10">
+          No Reports available
+        </div>
       )}
     </div>
   );
