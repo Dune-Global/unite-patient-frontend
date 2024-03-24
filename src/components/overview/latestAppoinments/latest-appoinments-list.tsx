@@ -56,17 +56,19 @@ export default function AppoinmentList() {
 
   return (
     <div className="bg-ugray-0 mt-6 rounded-lg p-4 flex flex-col">
-      <div className="flex justify-center items-center scroll-my-36">
-        <Toggle
-          onClick={() => {
-            setToggleToday(!toggleToday);
-            setToggleLoading(true);
-          }}
-        >
-          <CalendarCheck className="mr-2 h-4 w-4" />
-          Today Only
-        </Toggle>
-      </div>
+        {appoinmentList.length > 0 && (
+            <div className="flex justify-center items-center scroll-my-36">
+                <Toggle
+                    onClick={() => {
+                        setToggleToday(!toggleToday);
+                        setToggleLoading(true);
+                    }}
+                >
+                    <CalendarCheck className="mr-2 h-4 w-4" />
+                    Today Only
+                </Toggle>
+            </div>
+        )}
       <div className="flex flex-col gap-7">
         {appoinmentList.length > 0 ? (
           appoinmentList.map((appoinment: any) => (
