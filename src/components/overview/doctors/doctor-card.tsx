@@ -36,7 +36,7 @@ export default function DoctorCard({
           
         </Avatar>
         <div>
-          <h3 className="text-base font-medium line-clamp-1">{firstName}</h3>
+          <h3 className="text-base font-medium line-clamp-1">{firstName} {lastName}</h3>
           <p className="text-base text-ugray-400">
             {designation}
           </p>

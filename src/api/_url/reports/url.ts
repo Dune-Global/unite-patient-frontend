@@ -7,3 +7,6 @@ export const GET_DOCTOR_LIST_AND_ACCESS_INFO_URL =
 
 export const UPDATE_REPORT_ACCESS_URL =
   "/report/update-doctors-access/:reportId";
+
+  export const UPLOAD_REPORT_URL = "/report/attach-report";
+  export const UPLOAD_FILE_URL = "/file/upload";

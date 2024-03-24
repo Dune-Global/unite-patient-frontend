@@ -26,7 +26,7 @@ export default function DoctorsList() {
         setLoading(false);
       });
   }, []);
-
+  
   if (loading) {
     return (
       <div className="bg-ugray-0 mt-6 rounded-lg p-4">

@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  images: {
+    domains: ["unitestoreacc.blob.core.windows.net"],
+  },
   async redirects() {
     return [
       {
