@@ -1,4 +1,4 @@
-export interface doctorProfileObject {
+export interface patientProfileObject {
   editProfile: {
     firstName: string;
     lastName: string;

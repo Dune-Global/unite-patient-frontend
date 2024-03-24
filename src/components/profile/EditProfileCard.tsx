@@ -35,7 +35,7 @@ import {
 import { getUser } from "@/utils/getUser";
 import { IAccessToken } from "@/types/jwt";
 import { Button } from "../ui/button";
-import { doctorProfileObject } from "@/types/profile";
+import { patientProfileObject } from "@/types/profile";
 import { convertToObject } from "@/helpers/settings/convertEditProfileObject";
 
 let user: IAccessToken | undefined;
@@ -149,7 +149,7 @@ export default function EditProfileCard() {
     console.log(values);
     console.log("hi patient", patient);
 
-    const obj: doctorProfileObject = convertToObject(values);
+    const obj: patientProfileObject = convertToObject(values);
 
     try {
       const res = await updatePatient(obj);
