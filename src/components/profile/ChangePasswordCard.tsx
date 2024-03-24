@@ -46,34 +46,37 @@ export default function AvailabilityCard() {
     },
   });
 
-async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-        const res = await updatePassword({
-            oldPassword: values.currentPassword,
-            newPassword: values.newPassword,
-        });
+      const res = await updatePassword({
+        oldPassword: values.currentPassword,
+        newPassword: values.newPassword,
+      });
 
-        if (res.status === 200) {
-            toast({
-                title: "Password updated successfully!",
-                description: "Your password has been updated.",
-            });
-        } else {
-            toast({
-                title: "Something went wrong!",
-                description: res.data.message,
-                variant: "destructive",
-            });
-        }
-    } catch (error) {
-        console.error('There has been a problem with your fetch operation:', error);
+      if (res.status === 200) {
         toast({
-            title: "Password must match!",
-            description: "Please try again",
-            variant: "destructive",
+          title: "Password updated successfully!",
+          description: "Your password has been updated.",
         });
+      } else {
+        toast({
+          title: "Something went wrong!",
+          description: res.data.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error(
+        "There has been a problem with your fetch operation:",
+        error
+      );
+      toast({
+        title: "Password must match!",
+        description: "Please try again",
+        variant: "destructive",
+      });
     }
-}
+  }
 
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -111,7 +114,8 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
                     <FormItem className="relative">
                       <FormControl>
                         <Input
-                          placeholder="Enter current password"                          
+                          type={showConfirmPassword ? "text" : "password"}
+                          placeholder="Enter current password"
                           {...field}
                         />
                       </FormControl>
@@ -151,7 +155,11 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
                   render={({ field }) => (
                     <FormItem className="relative">
                       <FormControl>
-                        <Input placeholder="Enter new password" {...field} />
+                        <Input
+                          type={showConfirmPassword ? "text" : "password"}
+                          placeholder="Enter new password"
+                          {...field}
+                        />
                       </FormControl>
                       <button
                         className="absolute right-2 top-[0.65rem] text-xl"
@@ -181,7 +189,7 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
               </div>
               <div className="snap-end w-full">
                 <div className="text-sm pb-2 text-ugray-400">
-                  Number of Appointments
+                  Confirm Password
                 </div>
                 <FormField
                   control={form.control}
@@ -189,7 +197,11 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
                   render={({ field }) => (
                     <FormItem className="relative">
                       <FormControl>
-                        <Input placeholder="Re-enter new password" {...field} />
+                        <Input
+                          type={showConfirmPassword ? "text" : "password"}
+                          placeholder="Re-enter new password"
+                          {...field}
+                        />
                       </FormControl>
                       <button
                         className="absolute right-2 top-[0.65rem] text-xl"
