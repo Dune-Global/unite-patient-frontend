@@ -29,26 +29,26 @@ export const connectedDoctorsColumns: ColumnDef<IMedicalInformation>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "doctorName",
+    accessorKey: "firstName",
     header: "Doctor Name",
     cell: ({ row }) => {
       return (
         <div className="flex flex-col justify-center lg:flex-row lg:justify-start gap-2 items-center">
           <div>
             <img
-              src={`https://ui-avatars.com/api/?name=${row.original.doctorName}`}
+              src={`https://ui-avatars.com/api/?name=${row.original.firstName}+${row.original.lastName}`}
               alt="patient"
               className="w-8 h-8 rounded-full"
             />
           </div>
-          <div>{row.original.doctorName}</div>
+          <div>{`${row.original.firstName} ${row.original.lastName}`}</div>
         </div>
       );
     },
   },
 
   {
-    accessorKey: "specialty",
+    accessorKey: "designation",
     header: ({ column }) => {
       return (
         <div className="flex items-center">
