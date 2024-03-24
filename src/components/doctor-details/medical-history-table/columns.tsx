@@ -6,6 +6,10 @@ import { IMedicalInformation } from "@/types/medical-information";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
+interface connectedDoctorsColumnsProps {
+  doctorsAllowed: IMedicalInformation[];
+}
+
 export const connectedDoctorsColumns: ColumnDef<IMedicalInformation>[] = [
   {
     id: "select",
@@ -21,7 +25,9 @@ export const connectedDoctorsColumns: ColumnDef<IMedicalInformation>[] = [
     ),
     cell: ({ row }) => (
       <Checkbox
-        checked={row.getIsSelected()}
+        checked={row.original.allowed}
+        // checked={row.getIsSelected()}
+        // onCheckedChange={row.getToggleSelectedHandler()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         // onCheckedChange={(checked) => {
         //   console.log("checked", checked);

@@ -38,6 +38,7 @@ import { IMedicalInformation } from "@/types/medical-information";
 import { getAllMedicalInformation } from "@/data/mock/medical-information";
 import { connectedDoctorsColumns } from "../medical-history-table/columns";
 import { getDoctorListAndAccessInfo } from "@/api/reports/reportsAPI";
+import ConnectedDoctorsTable from "../medical-history-table/ConncetedDoctorsTable";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -202,8 +203,13 @@ export function MedicalReportsDataTable<TData, TValue>({
               </div>
             </div>
             <div>
-              <MedicalInformationDataTable
+              {/* <MedicalInformationDataTable
                 columns={connectedDoctorsColumns}
+                data={connectedDoctors}
+                reportUrl={selectedRow?.reportUrl}
+                reportId={selectedRow?._id}
+              /> */}
+              <ConnectedDoctorsTable
                 data={connectedDoctors}
                 reportUrl={selectedRow?.reportUrl}
                 reportId={selectedRow?._id}
