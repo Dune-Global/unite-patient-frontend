@@ -43,7 +43,7 @@ export const getDoctorListAndAccessInfo = async (reportId: string) => {
  */
 
 export const updateReportAccess = async (
-  reportId: string,
+  patientSessionId: string,
   doctorId: string,
   allowed: boolean
 ) => {
@@ -51,7 +51,10 @@ export const updateReportAccess = async (
   return await CustomAxios({
     method: "PUT",
     baseURL: BACKEND_BASE_URL,
-    url: UPDATE_REPORT_ACCESS_URL.replace(":reportId", reportId),
+    url: UPDATE_REPORT_ACCESS_URL.replace(
+      ":patientSessionId",
+      patientSessionId
+    ),
     data: {
       doctorsAllowed: [
         {
@@ -62,6 +65,7 @@ export const updateReportAccess = async (
     },
   });
 };
+
 
 export const uploadReport = async (
   reportName: string,

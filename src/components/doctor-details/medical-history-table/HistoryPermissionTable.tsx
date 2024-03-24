@@ -3,18 +3,16 @@ import { IMedicalInformation } from "@/types/medical-information";
 import { Button } from "@/components/common/Button";
 import { updateReportAccess } from "@/api/reports/reportsAPI";
 
-interface ConnectedDoctorsTableProps {
+interface HistoryPermissionTableProps {
   data: IMedicalInformation[];
-  reportUrl?: string;
-  reportId?: string;
   isModalOpen?: boolean;
+  patientSessionId?: string;
 }
 
-const ConnectedDoctorsTable: React.FC<ConnectedDoctorsTableProps> = ({
+const HistoryPermissionTable: React.FC<HistoryPermissionTableProps> = ({
   data,
-  reportId,
-  reportUrl,
   isModalOpen,
+  patientSessionId,
 }) => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
@@ -27,7 +25,7 @@ const ConnectedDoctorsTable: React.FC<ConnectedDoctorsTableProps> = ({
       return acc;
     }, []);
     setSelectedRows(newSelectedRows);
-  }, [data, reportId, updateReportAccess, setSelectedRows, isModalOpen]);
+  }, [data, updateReportAccess, setSelectedRows]);
 
   const toggleRow = (doctorId: string) => {
     setSelectedRows((prevSelectedRows) => {
@@ -39,27 +37,7 @@ const ConnectedDoctorsTable: React.FC<ConnectedDoctorsTableProps> = ({
     });
   };
 
-  const handlePermissionChange = async () => {
-    try {
-      // Filter out doctors whose permissions haven't changed
-      const doctorsToUpdate = data.filter(
-        (doctor) => selectedRows.includes(doctor.doctorId) !== doctor.allowed
-      );
-
-      // Update permissions only for doctors whose permissions have changed
-      await Promise.all(
-        doctorsToUpdate.map(async (doctor) => {
-          const allowed = selectedRows.includes(doctor.doctorId);
-          if (reportId) {
-            await updateReportAccess(reportId, doctor.doctorId, allowed);
-          }
-        })
-      );
-      console.log("Permissions updated successfully");
-    } catch (error) {
-      console.error("Error calling updateReportAccess:", error);
-    }
-  };
+  const handlePermissionChange = async () => {};
 
   return (
     <div>
@@ -124,18 +102,9 @@ const ConnectedDoctorsTable: React.FC<ConnectedDoctorsTableProps> = ({
         <Button size="sm" onClick={handlePermissionChange}>
           Save changes
         </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => window.open(reportUrl, "_blank")}
-        >
-          View report
-        </Button>
       </div>
     </div>
   );
 };
 
-export default ConnectedDoctorsTable;
-
-
+export default HistoryPermissionTable;

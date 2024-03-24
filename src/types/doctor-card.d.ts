@@ -11,4 +11,5 @@ export type IDoctorCard = {
   isClinic: string;
   clinicName: string;
   clinicAddress: string;
+  _id?: string;
 };
