@@ -7,3 +7,7 @@ export const GET_DOCTOR_PATIENT_DETAILS_URL =
 
 export const GET_DOCTOR_DETAILS_OF_PATIENTS = "/patient-doc/connected-doctors";
 export const ALL_APPOINMENTS = "/appointment/patient-appointments";
+
+
+
+
