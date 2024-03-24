@@ -111,7 +111,6 @@ export function MedicalInformationDataTable<
 
       await updateReportAccess(reportId, doctorId, updatedAllowed);
       console.log("Report access updated successfully");
-      console.log("\n\nAfter Request:", doctorId, updatedAllowed);
 
       // Update the state with the modified data
       const updatedDoctorsAllowed = doctorsAllowed.map((doctor) => {
@@ -124,6 +123,7 @@ export function MedicalInformationDataTable<
 
       // Update the state with the modified data
       setDoctorsAllowed(updatedDoctorsAllowed);
+      console.log("\n\nAfter Request:", doctorId, updatedAllowed);
     } catch (error) {
       console.error("Error updating report access:", error);
     }
