@@ -1,15 +1,21 @@
-import type { Config } from "tailwindcss"
-
-const config = {
+/** @type {import('tailwindcss').Config} */
+export default {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
-  prefix: "",
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   theme: {
+    screens: {
+      xs: "320px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      xxl: "1536px",
+    },
     container: {
       center: true,
       padding: "2rem",
@@ -17,47 +23,87 @@ const config = {
         "2xl": "1400px",
       },
     },
-    extend: {
-      colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
+    colors: {
+      ugray: {
+        0: "hsl(var(--ugray-0))",
+        50: "hsl(var(--ugray-50))",
+        100: "hsl(var(--ugray-100))",
+        200: "hsl(var(--ugray-200))",
+        400: "hsl(var(--ugray-400))",
+        600: "hsl(var(--ugray-600))",
+        900: "hsl(var(--ugray-900))",
       },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+      ublue: {
+        50: "hsl(var(--ublue-50))",
+        100: "hsl(var(--ublue-100))",
+        200: "hsl(var(--ublue-200))",
+        400: "hsl(var(--ublue-400))",
+        600: "hsl(var(--ublue-600))",
+        900: "hsl(var(--ublue-900))",
       },
+      ugreen: {
+        200: "hsl(var(--ugreen-200))",
+        400: "hsl(var(--ugreen-400))",
+        600: "hsl(var(--ugreen-600))",
+        800: "hsl(var(--ugreen-800))",
+      },
+      uyellow: {
+        200: "hsl(var(--uyellow-200))",
+        400: "hsl(var(--uyellow-400))",
+        600: "hsl(var(--uyellow-600))",
+        800: "hsl(var(--uyellow-800))",
+      },
+      uorange: {
+        200: "hsl(var(--uorange-200))",
+        400: "hsl(var(--uorange-400))",
+        600: "hsl(var(--uorange-600))",
+        800: "hsl(var(--uorange-800))",
+      },
+      ured: {
+        200: "hsl(var(--ured-200))",
+        400: "hsl(var(--ured-400))",
+        600: "hsl(var(--ured-600))",
+        800: "hsl(var(--ured-800))",
+      },
+      uindigo: {
+        200: "hsl(var(--uindigo-200))",
+        400: "hsl(var(--uindigo-400))",
+        600: "hsl(var(--uindigo-600))",
+        800: "hsl(var(--uindigo-800))",
+      },
+      umint: {
+        200: "hsl(var(--umint-200))",
+        400: "hsl(var(--umint-400))",
+        600: "hsl(var(--umint-600))",
+        800: "hsl(var(--umint-800))",
+      },
+      uteal: {
+        200: "hsl(var(--uteal-200))",
+        400: "hsl(var(--uteal-400))",
+        600: "hsl(var(--uteal-600))",
+        800: "hsl(var(--uteal-800))",
+      },
+      ucyan: {
+        200: "hsl(var(--ucyan-200))",
+        400: "hsl(var(--ucyan-400))",
+        600: "hsl(var(--ucyan-600))",
+        800: "hsl(var(--ucyan-800))",
+      },
+      upurple: {
+        200: "hsl(var(--upurple-200))",
+        400: "hsl(var(--upurple-400))",
+        600: "hsl(var(--upurple-600))",
+        800: "hsl(var(--upurple-800))",
+      },
+      upink: {
+        200: "hsl(var(--upink-200))",
+        400: "hsl(var(--upink-400))",
+        600: "hsl(var(--upink-600))",
+        800: "hsl(var(--upink-800))",
+      },
+
+      transparent: "transparent",
+
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -75,6 +121,4 @@ const config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
-
-export default config
+};
