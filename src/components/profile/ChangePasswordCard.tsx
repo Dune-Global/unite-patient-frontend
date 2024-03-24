@@ -86,11 +86,11 @@ export default function AvailabilityCard() {
     setShowPassword(!showPassword);
   };
 
-  const handleEyeClick2 = () => {
+  const handleEyeClickNew = () => {
     setShowNewPassword(!showNewPassword);
   };
 
-  const handleEyeClick3 = () => {
+  const handleEyeClickConfirm = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
@@ -114,7 +114,7 @@ export default function AvailabilityCard() {
                     <FormItem className="relative">
                       <FormControl>
                         <Input
-                          type={showConfirmPassword ? "text" : "password"}
+                          type={showPassword ? "text" : "password"}
                           placeholder="Enter current password"
                           {...field}
                         />
@@ -156,7 +156,7 @@ export default function AvailabilityCard() {
                     <FormItem className="relative">
                       <FormControl>
                         <Input
-                          type={showConfirmPassword ? "text" : "password"}
+                          type={showNewPassword ? "text" : "password"}
                           placeholder="Enter new password"
                           {...field}
                         />
@@ -164,7 +164,7 @@ export default function AvailabilityCard() {
                       <button
                         className="absolute right-2 top-[0.65rem] text-xl"
                         type="button"
-                        onClick={handleEyeClick2}
+                        onClick={handleEyeClickNew}
                       >
                         {showNewPassword ? (
                           <EyeOff
@@ -206,7 +206,7 @@ export default function AvailabilityCard() {
                       <button
                         className="absolute right-2 top-[0.65rem] text-xl"
                         type="button"
-                        onClick={handleEyeClick3}
+                        onClick={handleEyeClickConfirm}
                       >
                         {showConfirmPassword ? (
                           <EyeOff
