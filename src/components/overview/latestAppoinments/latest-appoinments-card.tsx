@@ -7,15 +7,15 @@ import Link from "next/link";
 export default function LatestAppoinmentCard({
   firstName,
   lastName,
-  designation,
+  appoinmentNo,
   imageUrl,
-  status,
+  time,
 }: {
   firstName: string;
   lastName: string;
-  designation?: string;
+  appoinmentNo?: string;
   imageUrl: string;
-  status?: string;
+  time?: string;
 }) {
   const handleCancel = () => {
     alert("Cancel");
@@ -28,33 +28,36 @@ export default function LatestAppoinmentCard({
   const firstLetter = firstName.charAt(0);
   const secondLetter = lastName.charAt(0);
 
+  const formatedDateAndTime = time
+    ? new Date(time).toLocaleDateString("en-US")
+    : "";
+
   return (
     <div className="flex flex-row justify-between w-full">
       <div className="flex flex-row gap-3 items-center w-1/2">
         <Avatar>
           <AvatarImage src={imageUrl} />
-          
         </Avatar>
         <div>
-          <h3 className="text-base font-medium line-clamp-1">{firstName}</h3>
+          <h3 className="text-base font-medium line-clamp-1">
+            {firstName} {lastName}
+          </h3>
           <p className="text-base text-ugray-400">
-            {designation}
+            Appoinment No: {appoinmentNo}
           </p>
         </div>
       </div>
       <div className="w-1/2 flex justify-end items-center">
-        {status === "done" ? (
+        {time === "done" ? (
           <span className="text-xs text-uindigo-600 bg-uindigo-200 px-4 py-2 rounded-md ">
             Done
           </span>
-        ) : status === "cancelled" ? (
+        ) : time === "cancelled" ? (
           <span className="text-xs text-ured-600 bg-[#FDE9E9] px-4 py-2 rounded-md">
             Cancelled
           </span>
         ) : (
-          <div className="flex text-xs text-ugreen-600">
-            {status} 
-          </div>
+          <div className="flex text-xs text-ugreen-600">{formatedDateAndTime}</div>
         )}
       </div>
     </div>
