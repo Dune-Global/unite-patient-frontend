@@ -108,7 +108,7 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
                   control={form.control}
                   name="currentPassword"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="relative">
                       <FormControl>
                         <Input
                           placeholder="Enter current password"                          
@@ -122,13 +122,13 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
                       >
                         {showPassword ? (
                           <EyeOff
-                            size={25}
+                            size={22}
                             strokeWidth={1}
                             className="text-black"
                           />
                         ) : (
                           <Eye
-                            size={25}
+                            size={22}
                             strokeWidth={1}
                             className="text-black"
                           />
@@ -149,7 +149,7 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
                   control={form.control}
                   name="newPassword"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="relative">
                       <FormControl>
                         <Input placeholder="Enter new password" {...field} />
                       </FormControl>
@@ -160,13 +160,13 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
                       >
                         {showNewPassword ? (
                           <EyeOff
-                            size={25}
+                            size={22}
                             strokeWidth={1}
                             className="text-black"
                           />
                         ) : (
                           <Eye
-                            size={25}
+                            size={22}
                             strokeWidth={1}
                             className="text-black"
                           />
@@ -187,7 +187,7 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
                   control={form.control}
                   name="confirmPassword"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="relative">
                       <FormControl>
                         <Input placeholder="Re-enter new password" {...field} />
                       </FormControl>
@@ -198,13 +198,13 @@ async function onSubmit(values: z.infer<typeof formSchema>) {
                       >
                         {showConfirmPassword ? (
                           <EyeOff
-                            size={25}
+                            size={22}
                             strokeWidth={1}
                             className="text-black"
                           />
                         ) : (
                           <Eye
-                            size={25}
+                            size={22}
                             strokeWidth={1}
                             className="text-black"
                           />
