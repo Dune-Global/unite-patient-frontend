@@ -1,5 +1,4 @@
-"use client";
-
+import React, { useEffect, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -12,7 +11,17 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
+import { updateReportAccess } from "@/api/reports/reportsAPI";
+import { IMedicalInformation } from "@/types/medical-information";
+import { Button } from "@/components/common/Button";
+import { Button as ShadButton } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -21,18 +30,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-import { Button as ShadButton } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
-import { IMedicalInformation } from "@/types/medical-information";
-import { Button } from "@/components/common/Button";
 
 interface DataTableProps<TData extends IMedicalInformation, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -54,6 +51,9 @@ export function MedicalInformationDataTable<
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [checkedRows, setCheckedRows] = useState<IMedicalInformation[]>([]);
+  const [doctorsAllowed, setDoctorsAllowed] = useState<IMedicalInformation[]>(
+    []
+  );
 
   const table = useReactTable({
     data,
@@ -72,17 +72,70 @@ export function MedicalInformationDataTable<
     },
   });
 
-  const handleLogClick = () => {
-    const selectedDoctorIds = checkedRows.map((row) => row.doctorId);
-    console.log("\n\n\nselected doctor IDs", selectedDoctorIds);
-    console.log("\n\n\nselected report ID", reportId);
-  };
-
   useEffect(() => {
     setCheckedRows(
       table.getFilteredSelectedRowModel().rows.map((row) => row.original)
     );
-  }, [table.getFilteredSelectedRowModel().rows]);
+    setDoctorsAllowed(
+      table.getFilteredRowModel().rows.map((row) => row.original)
+    );
+    console.log("\n\nDoctors allowed:", doctorsAllowed);
+    console.log("\n\nChecked rows:", checkedRows);
+  }, [
+    table.getFilteredSelectedRowModel().rows,
+    table.getFilteredRowModel().rows,
+  ]);
+
+  const handleLogClick = () => {
+    const selectedDoctorIds = checkedRows.map((row) => row.doctorId);
+    const allowed = doctorsAllowed.map((row) => row.allowed);
+    console.log("\n\n\nselected doctor IDs", selectedDoctorIds);
+    console.log("\n\n\nselected report ID", reportId);
+    console.log("\n\n\nallowed", allowed);
+    console.log("\n\n\ndoctors allowed", doctorsAllowed);
+  };
+
+  const handlePermissionChange = async (
+    reportId: string,
+    doctorId: string,
+    allowed: boolean
+  ) => {
+    try {
+      // Check if the doctor is in the checkedRows array
+      const isChecked = checkedRows.some(
+        (checkedRow) => checkedRow.doctorId === doctorId
+      );
+
+      // If the doctor is checked, set allowed to true, otherwise, set it to false
+      const updatedAllowed = isChecked ? true : false;
+
+      await updateReportAccess(reportId, doctorId, updatedAllowed);
+      console.log("Report access updated successfully");
+      console.log("\n\nAfter Request:", doctorId, updatedAllowed);
+
+      // Update the state with the modified data
+      const updatedDoctorsAllowed = doctorsAllowed.map((doctor) => {
+        if (doctor.doctorId === doctorId) {
+          return { ...doctor, allowed: updatedAllowed };
+        } else {
+          return doctor;
+        }
+      });
+
+      // Update the state with the modified data
+      setDoctorsAllowed(updatedDoctorsAllowed);
+    } catch (error) {
+      console.error("Error updating report access:", error);
+    }
+  };
+
+  const handleCheckboxChange = (rowId: string, checked: boolean) => {
+    // You can perform any necessary action here when the checkbox is changed
+    console.log(
+      `Checkbox for row ${rowId} is now ${checked ? "checked" : "unchecked"}`
+    );
+    // Perform any other action you need, such as updating state, etc.
+  };
 
   return (
     <>
@@ -177,7 +230,19 @@ export function MedicalInformationDataTable<
       </div>
       <div className="flex items-center flex-col md:flex-row justify-between space-y-4 md:space-x-0 space-x-2 py-4 mt-5">
         <div className="space-x-2">
-          <Button size="lg" onClick={handleLogClick}>
+          <Button
+            size="lg"
+            onClick={() => {
+              if (reportId) {
+                doctorsAllowed.forEach((row) => {
+                  handlePermissionChange(reportId, row.doctorId, row.allowed);
+                });
+              } else {
+                console.error("Report ID is undefined");
+              }
+            }}
+            // onClick={handleLogClick}
+          >
             Save changes
           </Button>
           <Button

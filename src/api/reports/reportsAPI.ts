@@ -49,8 +49,12 @@ export const updateReportAccess = async (
     baseURL: BACKEND_BASE_URL,
     url: UPDATE_REPORT_ACCESS_URL.replace(":reportId", reportId),
     data: {
-      doctorId: doctorId,
-      allowed: allowed,
+      doctorsAllowed: [
+        {
+          doctorId: doctorId,
+          allowed: allowed,
+        },
+      ],
     },
   });
 };

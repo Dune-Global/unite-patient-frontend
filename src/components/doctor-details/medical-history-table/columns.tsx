@@ -1,3 +1,4 @@
+//columns.tsx
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
@@ -22,6 +23,12 @@ export const connectedDoctorsColumns: ColumnDef<IMedicalInformation>[] = [
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
+        // onCheckedChange={(checked) => {
+        //   console.log("checked", checked);
+        //   console.log("row", row);
+        //   console.log("row.getIsSelected()", row.getIsSelected());
+        //   console.log("row.toggleSelected", row.toggleSelected);
+        // }}
         aria-label="Select row"
       />
     ),
