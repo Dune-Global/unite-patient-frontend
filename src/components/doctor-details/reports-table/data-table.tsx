@@ -96,7 +96,7 @@ export function MedicalReportsDataTable<TData, TValue>({
       }
     };
     getDoctorListAndAccessInfoActionHandler(selectedRow?._id);
-  }, [selectedRow]);
+  }, [selectedRow, isModalOpen]);
 
   return (
     <>
@@ -194,7 +194,10 @@ export function MedicalReportsDataTable<TData, TValue>({
       <UniteModal
         title={selectedRow ? selectedRow.reportType : ""}
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          console.log("isModalOpen", isModalOpen);
+        }}
         content={
           <div className="grid gap-4">
             <div>
@@ -213,6 +216,7 @@ export function MedicalReportsDataTable<TData, TValue>({
                 data={connectedDoctors}
                 reportUrl={selectedRow?.reportUrl}
                 reportId={selectedRow?._id}
+                isModalOpen={isModalOpen}
               />
             </div>
           </div>
