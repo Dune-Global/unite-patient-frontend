@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/form";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { toast } from "@/components/ui/use-toast";
@@ -27,6 +26,7 @@ import {
   setIsAuth,
   setRefreshToken,
 } from "@/store/reducers/auth-reducer";
+import { Button } from "@/components/common/Button";
 const formSchema = z.object({
   email: z
     .string()
