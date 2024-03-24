@@ -30,7 +30,7 @@ export default function AppoinmentList() {
     (state: RootState) => state.doctorState.selectedDate
   );
   const [loading, setLoading] = useState(true);
-  const [toggleToday, setToggleToday] = useState(true);
+  const [toggleToday, setToggleToday] = useState(false);
   const [toggleLoading, setToggleLoading] = useState(false);
 
   useEffect(() => {
@@ -84,20 +84,18 @@ export default function AppoinmentList() {
 
   return (
     <div className="bg-ugray-0 mt-6 rounded-lg p-4 flex flex-col">
-      {appoinmentList.length > 0 && (
-        <div className="flex justify-center items-center scroll-my-36">
-          <Toggle
-            onClick={() => {
-              setToggleToday(!toggleToday);
-              setToggleLoading(true);
-            }}
-            className="my-4"
-          >
-            <CalendarCheck className="mr-2 h-4 w-4" />
-            {toggleToday ? "Today Appointments" : "All Appointments"}
-          </Toggle>
-        </div>
-      )}
+      <div className="flex justify-center items-center scroll-my-36">
+        <Toggle
+          onClick={() => {
+            setToggleToday(!toggleToday);
+            setToggleLoading(true);
+          }}
+          className="my-4"
+        >
+          <CalendarCheck className="mr-2 h-4 w-4" />
+          {toggleToday ? "Today Appointments" : "All Appointments"}
+        </Toggle>
+      </div>
       <div className="flex flex-col gap-7">
         {appoinmentList.length > 0 ? (
           appoinmentList.map((appoinment: any) => (

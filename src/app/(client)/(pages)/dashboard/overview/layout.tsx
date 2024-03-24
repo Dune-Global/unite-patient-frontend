@@ -31,7 +31,7 @@ export default function Layout({
       {summary}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-5">
         {doctors}
-        <div className="grid grid-rows-2">
+        <div className="flex flex-col gap-10">
           {bookAnAppoinment}
           {reports}
         </div>

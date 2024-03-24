@@ -16,6 +16,16 @@ const nextConfig = {
         destination: "/dashboard/overview",
         permanent: false,
       },
+      {
+        source: "/doctors",
+        destination: "/dashboard/doctors",
+        permanent: false,
+      },
+      {
+        source: "/appoinments",
+        destination: "/dashboard/appointments",
+        permanent: false,
+      },
     ];
   },
 };

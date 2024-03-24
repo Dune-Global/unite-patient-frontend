@@ -7,5 +7,6 @@ export type IMedicalInformation = {
   firstName: string;
   lastName: string;
   designation: string;
+  informationLastAccessDate: string;
   // specialty: string;
 };

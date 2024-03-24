@@ -32,7 +32,7 @@ export default function Summary() {
         cardColor="bg-uorange-600"
         description="Unread Messages"
         Icon={MessageSquareMoreIcon}
-        value="03"
+        value="Coming soon"
       />
       <SummaryCard
         cardColor="bg-umint-600"

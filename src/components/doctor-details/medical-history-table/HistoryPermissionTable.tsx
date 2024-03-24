@@ -49,12 +49,21 @@ const HistoryPermissionTable: React.FC<HistoryPermissionTableProps> = ({
       await Promise.all(
         doctorsToUpdate.map(async (doctor) => {
           const allowed = selectedRows.includes(doctor.doctorId);
-          if (patientSessionId)
+          console.log(
+            "Passing details",
+            patientSessionId,
+            doctor.doctorId,
+            allowed
+          );
+          if (patientSessionId) {
+            console.log(`Updating permission for doctor ${doctor.doctorId}`);
             await updateHistoryAccess(
               patientSessionId,
               doctor.doctorId,
               allowed
             );
+            console.log(`Permission updated for doctor ${doctor.doctorId}`);
+          }
         })
       );
       console.log("Permissions updated successfully");
@@ -62,6 +71,8 @@ const HistoryPermissionTable: React.FC<HistoryPermissionTableProps> = ({
       console.error("Error calling updateReportAccess:", error);
     }
   };
+
+  console.log("Rendering HistoryPermissionTable with data:", data);
 
   return (
     <div>
@@ -84,7 +95,7 @@ const HistoryPermissionTable: React.FC<HistoryPermissionTableProps> = ({
               scope="col"
               className="px-6 py-3 text-left text-sm font-medium text-ugray-400  tracking-wider"
             >
-              Designation
+              Last Accessed
             </th>
           </tr>
         </thead>
@@ -117,7 +128,11 @@ const HistoryPermissionTable: React.FC<HistoryPermissionTableProps> = ({
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-ugray-500">
-                  {doctor.designation}
+                  {doctor.informationLastAccessDate
+                    ? new Date(
+                        doctor.informationLastAccessDate
+                      ).toLocaleDateString("en-GB")
+                    : "N/A"}
                 </td>
               </tr>
             ))}
@@ -133,3 +148,4 @@ const HistoryPermissionTable: React.FC<HistoryPermissionTableProps> = ({
 };
 
 export default HistoryPermissionTable;
+

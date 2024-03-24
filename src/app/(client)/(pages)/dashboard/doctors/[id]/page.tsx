@@ -6,6 +6,7 @@ import {
 } from "@/api/doctor-details/doctorDetailsAPI";
 import DoctorCard from "@/components/doctor-details/DoctorCard";
 import HistoryAccordion from "@/components/doctor-details/HistoryAccordion";
+import { Skeleton } from "@/components/ui/skeleton";
 import { IDoctorPatientDetails } from "@/types/doctor-patient-details";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -18,7 +19,8 @@ const Page: React.FC<PatientHistoryProps> = ({ patientHistory }) => {
   const params = useParams();
 
   const [doctorDetails, setDoctorDetails] = useState<any>({});
-
+  const [isDoctorPatientLoading, setIsDoctorPatientLoading] = useState(true);
+  const [isDoctorDetailsLoading, setIsDoctorDetailsLoading] = useState(true);
   const [doctorPatientDetails, setDoctorPatientDetails] =
     useState<IDoctorPatientDetails | null>(null);
 
@@ -34,9 +36,11 @@ const Page: React.FC<PatientHistoryProps> = ({ patientHistory }) => {
           if (res.data) {
             getDoctorDetailsActionHandler(res.data.doctor);
           }
+          setIsDoctorPatientLoading(false);
         })
         .catch((error) => {
           console.error("Error fetching doctor patient details", error);
+          setIsDoctorPatientLoading(false);
         });
     };
 
@@ -45,9 +49,11 @@ const Page: React.FC<PatientHistoryProps> = ({ patientHistory }) => {
         .then((res) => {
           setDoctorDetails(res.data);
           console.log("\n\n\nDoctor details", doctorDetails);
+          setIsDoctorDetailsLoading(false);
         })
         .catch((error) => {
           console.error("Error fetching doctor details", error);
+          setIsDoctorDetailsLoading(false);
         });
     };
 
@@ -57,6 +63,21 @@ const Page: React.FC<PatientHistoryProps> = ({ patientHistory }) => {
       getDoctorPatientDetailsBySessionIdActionHandler(params.id);
     }
   }, []);
+
+  if (isDoctorPatientLoading || isDoctorDetailsLoading) {
+    return (
+      <div className="grid grid-cols-3 gap-16">
+        <div className="col-span-1 mt-10">
+          <Skeleton className="h-[70vh] " />
+        </div>
+        <div className="col-span-2 mt-10 space-y-6">
+          <Skeleton className="h-[20vh]" />
+          <Skeleton className="h-[20vh]" />
+          <Skeleton className="h-[20vh]" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -93,7 +114,8 @@ const Page: React.FC<PatientHistoryProps> = ({ patientHistory }) => {
 
       <div className="md:col-span-2  md:px-6">
         <div className="my-4 ">
-          {doctorPatientDetails &&
+          {doctorPatientDetails?.prescription &&
+          doctorPatientDetails.prescription.length > 0 ? (
             doctorPatientDetails.prescription.map((prescriptionItem, index) => (
               <HistoryAccordion
                 key={prescriptionItem._id}
@@ -102,7 +124,10 @@ const Page: React.FC<PatientHistoryProps> = ({ patientHistory }) => {
                   index === doctorPatientDetails.prescription.length - 1
                 }
               />
-            ))}
+            ))
+          ) : (
+            <p className="text-ugray-200 text-center ">No history available</p>
+          )}
         </div>
       </div>
     </div>
@@ -110,3 +135,4 @@ const Page: React.FC<PatientHistoryProps> = ({ patientHistory }) => {
 };
 
 export default Page;
+

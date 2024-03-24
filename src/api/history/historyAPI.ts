@@ -42,7 +42,7 @@ export const updateHistoryAccess = async (
       patientSessionId
     ),
     data: {
-      doctorsAllowed: [
+      allowedDoctors: [
         {
           doctorId: doctorId,
           allowed: allowed,
@@ -51,3 +51,4 @@ export const updateHistoryAccess = async (
     },
   });
 };
+

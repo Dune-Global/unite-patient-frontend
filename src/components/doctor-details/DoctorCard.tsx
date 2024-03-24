@@ -27,6 +27,7 @@ const DoctorCard: React.FC<IDoctorCard> = ({
 
   const [infoData, setInfoData] = useState<IMedicalInformation[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getDoctorListAndAccessInfoActionHandler = async (
@@ -35,7 +36,6 @@ const DoctorCard: React.FC<IDoctorCard> = ({
       const res = await getAllConnectedDoctors(patientSessionId);
       console.log("\n\n\ndoctor list and access info res", res.data);
       if (res.data && Array.isArray(res.data.allowedDoctors)) {
-
         // Check if allowedDoctors is an array
         setInfoData(res.data.allowedDoctors);
       } else {
@@ -46,10 +46,16 @@ const DoctorCard: React.FC<IDoctorCard> = ({
       }
     };
     getDoctorListAndAccessInfoActionHandler(sessionId);
-  }, []);
+  }, [isModalOpen]);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    console.log("modal", isModalOpen);
+  };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    console.log("modal", isModalOpen);
   };
 
   return (
@@ -66,6 +72,7 @@ const DoctorCard: React.FC<IDoctorCard> = ({
           <div className="flex flex-col gap-4">
             <UniteModal
               title="Show Medical Information"
+              isOpen={isModalOpen}
               onClose={handleCloseModal}
               content={
                 infoData !== null ? (
@@ -76,11 +83,10 @@ const DoctorCard: React.FC<IDoctorCard> = ({
                   />
                 ) : null
               }
-            >
-              <Button onClick={() => isModalOpen} variant="default" size="sm">
-                Show Medical History
-              </Button>
-            </UniteModal>
+            ></UniteModal>
+            <Button onClick={handleOpenModal} variant="default" size="sm">
+              Show Medical History
+            </Button>
           </div>
         </div>
       </div>
@@ -141,3 +147,4 @@ const DoctorCard: React.FC<IDoctorCard> = ({
 };
 
 export default DoctorCard;
+

@@ -33,10 +33,7 @@ import { Button as ShadButton } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { UniteModal } from "@/components/common/UniteModal";
-import { MedicalInformationDataTable } from "../medical-history-table/data-table";
 import { IMedicalInformation } from "@/types/medical-information";
-import { getAllMedicalInformation } from "@/data/mock/medical-information";
-import { connectedDoctorsColumns } from "../medical-history-table/columns";
 import { getDoctorListAndAccessInfo } from "@/api/reports/reportsAPI";
 import ConnectedDoctorsTable from "../medical-history-table/ConncetedDoctorsTable";
 
@@ -265,3 +262,4 @@ export function MedicalReportsDataTable<TData, TValue>({
     </>
   );
 }
+
