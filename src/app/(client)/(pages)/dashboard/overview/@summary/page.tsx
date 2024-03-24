@@ -9,8 +9,12 @@ export default function Summary() {
   const doctorsList = useSelector(
     (state: RootState) => state.doctorState.doctorList
   );
+  const appointmentsList = useSelector(
+    (state: RootState) => state.doctorState.appointmentList
+  );
 
   const doctorsCount = doctorsList.length;
+  const appointmentsCount = appointmentsList.length;
 
   return (
     <div className="mt-6 flex flex-row flex-wrap justify-between">
@@ -36,7 +40,7 @@ export default function Summary() {
         cardColor="bg-umint-600"
         description="Total Appointments"
         Icon={Clock}
-        value="16"
+        value={appointmentsCount.toString()}
       />
     </div>
   );
