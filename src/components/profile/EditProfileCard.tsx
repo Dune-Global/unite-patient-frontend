@@ -27,7 +27,6 @@ import { format } from "date-fns";
 import { ProfileInfo } from "@/data/mock/profile-info";
 import { CalendarIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Button } from "../ui/button";
 import {
   getUserDetails,
   updatePatient,
@@ -35,6 +34,9 @@ import {
 } from "@/api/profile/profileAPI";
 import { getUser } from "@/utils/getUser";
 import { IAccessToken } from "@/types/jwt";
+import { Button } from "../ui/button";
+import { doctorProfileObject } from "@/types/profile";
+import { convertToObject } from "@/helpers/settings/convertEditProfileObject";
 
 let user: IAccessToken | undefined;
 const tempUser = getUser();
@@ -47,8 +49,8 @@ const formSchema = z.object({
   lastName: z.string().nonempty({ message: "Last name is required" }),
   email: z.string().nonempty({ message: "Email is required" }),
   phoneNumber: z.string().nonempty({ message: "Contact number is required" }),
-  dateOfBirth: z.string().nonempty({ message: "Date of birth is required" }),
-  gender: z.string().nonempty({ message: "Gender is required" }),
+  dateOfBirth: z.date(),
+  gender: z.string().optional(),
   height: z.number().optional(),
   weight: z.number().optional(),
   bloodGroup: z.string().optional(),
@@ -80,16 +82,22 @@ export default function EditProfileCard() {
 
   const [patient, setPatient] = useState<PatientType | null>(null);
 
-  if (user) {
-    const res: any = getUserDetails(user?.id);
-    if (res.status === 200) {
-      setPatient(res.data);
-    } else if (res.data) {
-      console.log(res.data.message);
-    } else {
-      console.log("No message available");
-    }
-  }
+  useEffect(() => {
+    const checkUser = async () => {
+      if (user) {
+        console.log(user);
+        const res: any = await getUserDetails(user?.id);
+        if (res.status === 200) {
+          setPatient(res.data);
+        } else if (res.data) {
+          console.log(res.data.message);
+        } else {
+          console.log("No message available");
+        }
+      }
+    };
+    checkUser();
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -98,7 +106,7 @@ export default function EditProfileCard() {
       lastName: patient?.lastName || "",
       email: patient?.email || "",
       phoneNumber: "",
-      dateOfBirth: "",
+      dateOfBirth: new Date() || null,
       gender: "",
       height: 0,
       weight: 0,
@@ -108,25 +116,6 @@ export default function EditProfileCard() {
     },
   });
 
-  useEffect(() => {
-    if (user) {
-      getUserDetails(user.id)
-        .then((res: any) => {
-          if (res.status === 200) {
-            setPatient(res.data);
-            console.log(res.data);
-          } else {
-            console.log(res.data.message);
-          }
-        })
-        .catch((error: any) => {
-          console.error(
-            "There has been a problem with your fetch operation:",
-            error
-          );
-        });
-    }
-  }, [user]);
 
   const handleVerifyEmail = async () => {
     try {
@@ -156,27 +145,18 @@ export default function EditProfileCard() {
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+
+    const obj: doctorProfileObject = convertToObject(values);
+
     try {
-      const res = await updatePatient({
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        dateOfBirth: "",
-        gender: "",
-        imgUrl: "",
-        mobile: "",
-        weight: 0,
-        height: 0,
-        bloodGroup: "",
-        allergies: "",
-        hereditaryDiseases: ""
-      });
-      console.log(res);
+      const res = await updatePatient(obj);
+      console.log("hi", res.status);
 
       if (res.status === 200) {
         toast({
-          title: "Password updated successfully!",
-          description: "Your password has been updated.",
+          title: "Profile updated successfully!",
+          description: "Your profile has been updated.",
         });
       } else {
         toast({
@@ -191,7 +171,7 @@ export default function EditProfileCard() {
         error
       );
       toast({
-        title: "Password update failed",
+        title: "Profile update failed",
         description: "Please try again",
         variant: "destructive",
       });
@@ -310,7 +290,9 @@ export default function EditProfileCard() {
               </div>
               <div className="flex flex-col lg:flex-row gap-4 w-full">
                 <div className="snap-end w-full">
-                  <div className="text-sm pb-2 text-ugray-400">Date of Birth</div>
+                  <div className="text-sm pb-2 text-ugray-400">
+                    Date of Birth
+                  </div>
                   <FormField
                     control={form.control}
                     name="dateOfBirth"
@@ -359,7 +341,7 @@ export default function EditProfileCard() {
                   <div className="text-sm pb-2 text-ugray-400">Gender</div>
                   <FormField
                     control={form.control}
-                    name="phoneNumber"
+                    name="gender"
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
@@ -438,7 +420,7 @@ export default function EditProfileCard() {
                       <FormItem>
                         <FormControl>
                           <Input
-                            placeholder="Enter current hospital"
+                            placeholder="Enter blood group"
                             defaultValue={profile.bloodGroup}
                             {...field}
                           />
@@ -452,7 +434,7 @@ export default function EditProfileCard() {
                 </div>
                 <div className="snap-end w-full">
                   <div className="text-sm pb-2 text-ugray-400">
-                    Current University
+                    Hereditary Diseases
                   </div>
                   <FormField
                     control={form.control}
@@ -461,7 +443,7 @@ export default function EditProfileCard() {
                       <FormItem>
                         <FormControl>
                           <Input
-                            placeholder="Enter current university"
+                            placeholder="Enter hereditary diseases"
                             defaultValue={profile.hereditaryDiseases}
                             {...field}
                           />
