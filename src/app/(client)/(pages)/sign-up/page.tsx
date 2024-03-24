@@ -70,6 +70,7 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [genderList, setGenderList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     getGenderList().then((res) => {
@@ -88,6 +89,7 @@ export default function SignIn() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
     try {
       const res = await registerAccount(values);
       console.log(res);
@@ -103,13 +105,16 @@ export default function SignIn() {
             </pre>
           ),
         });
+        setIsLoading(false);
       } else if (res.status === 409) {
+        setIsLoading(false);
         toast({
           title: "Sign up failed",
           description: res.data.errors[0].messages[0],
           variant: "destructive",
         });
       } else {
+        setIsLoading(false);
         toast({
           title: "Sign up failed",
           description: "Please try again",
@@ -117,6 +122,7 @@ export default function SignIn() {
         });
       }
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
       toast({
         title: "Sign up failed",
@@ -129,13 +135,10 @@ export default function SignIn() {
   const handleEyeClick = () => {
     setShowPassword(!showPassword);
   };
-  const handleEyeClick2 = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
 
   return (
-    <div className=" ">
-      <div className="flex justify-center ">
+    <div className="flex justify-center items-center">
+      <div className="flex justify-center">
         <div className="flex flex-col gap-2 md:px-8  w-80  items-center justify-center sm:w-[500px] py-5   ">
           <div>
             <Image
@@ -219,7 +222,6 @@ export default function SignIn() {
                     )}
                   />
                 </div>
-
                 <div>
                   <div className="text-base">Date of Birth</div>
                   <FormField
@@ -233,7 +235,7 @@ export default function SignIn() {
                               <Button
                                 variant={"outline"}
                                 className={cn(
-                                  "w-full border-ugray-100 pl-3 text-left font-normal flex flex-row  ",
+                                  "w-full border-ugray-100 pl-3 text-left font-normal h-12 flex flex-row justify-between",
                                   !field.value && "text-muted-foreground"
                                 )}
                               >
@@ -341,7 +343,11 @@ export default function SignIn() {
                 </div>
               </div>
               <div className="py-2">
-                <Button className="w-full bg-ublue-100 text-ugray-0">
+                <Button
+                  size={"lg"}
+                  loading={isLoading}
+                  className="w-full bg-ublue-100 text-ugray-0"
+                >
                   Sign Up
                 </Button>
                 <div className="text-sm text-center pt-2">
