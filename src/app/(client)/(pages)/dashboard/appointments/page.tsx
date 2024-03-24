@@ -29,8 +29,13 @@ export default function AppointmentsPage() {
   }, []);
 
   return (
-    <div>
-      <DataTable columns={columns} data={data} />
-    </div>
+    <>
+      <div className="text-3xl font-medium">
+        <h1>All Appointments</h1>
+      </div>
+      <div>
+        <DataTable columns={columns} data={data} />
+      </div>
+    </>
   );
 }
