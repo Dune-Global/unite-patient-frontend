@@ -27,7 +27,6 @@ import { format } from "date-fns";
 import { ProfileInfo } from "@/data/mock/profile-info";
 import { CalendarIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Button } from "../ui/button";
 import {
   getUserDetails,
   updatePatient,
@@ -35,6 +34,7 @@ import {
 } from "@/api/profile/profileAPI";
 import { getUser } from "@/utils/getUser";
 import { IAccessToken } from "@/types/jwt";
+import { Button } from "../ui/button";
 
 let user: IAccessToken | undefined;
 const tempUser = getUser();
@@ -157,26 +157,13 @@ export default function EditProfileCard() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const res = await updatePatient({
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        dateOfBirth: "",
-        gender: "",
-        imgUrl: "",
-        mobile: "",
-        weight: 0,
-        height: 0,
-        bloodGroup: "",
-        allergies: "",
-        hereditaryDiseases: ""
-      });
+      const res = await updatePatient(values);
       console.log(res);
 
       if (res.status === 200) {
         toast({
-          title: "Password updated successfully!",
-          description: "Your password has been updated.",
+          title: "Profile updated successfully!",
+          description: "Your profile has been updated.",
         });
       } else {
         toast({
@@ -186,12 +173,9 @@ export default function EditProfileCard() {
         });
       }
     } catch (error) {
-      console.error(
-        "There has been a problem with your fetch operation:",
-        error
-      );
+      console.error('There has been a problem with your fetch operation:', error);
       toast({
-        title: "Password update failed",
+        title: "Profile update failed",
         description: "Please try again",
         variant: "destructive",
       });
