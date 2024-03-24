@@ -1,0 +1,19 @@
+name: Trigger Curl Command
+
+on:
+  push:
+    branches:
+      - dev/v1
+
+jobs:
+  trigger_curl:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Curl Command
+        run: |
+          curl -X POST \
+          -H "Accept: application/vnd.github.everest-preview+json" \
+          -H "Authorization: token ${{secrets.ACCESS_TOKEN}}" \
+          --data '{"event_type": "update-submodules"}' \
+          https://api.github.com/repos/Dune-Global/unite-deployment/dispatches

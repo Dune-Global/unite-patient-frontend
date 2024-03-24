@@ -33,12 +33,12 @@ export const sideMenuItems: SideMenuItems[] = [
     icon: ClipboardMinus,
     description: "Reports",
   },
-  {
-    id: 5,
-    path: "/dashboard/messages",
-    icon: MessageSquareMore,
-    description: "Messages",
-  },
+  // {
+  //   id: 5,
+  //   path: "/dashboard/messages",
+  //   icon: MessageSquareMore,
+  //   description: "Messages",
+  // },
   {
     id: 6,
     path: "/dashboard/settings",

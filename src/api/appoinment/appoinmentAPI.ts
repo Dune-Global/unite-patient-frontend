@@ -5,6 +5,7 @@ import {
   GET_DOCTOR_LOCATION,
   GET_APPOINMENT_NUMBER,
   SCHEDULE_APPOINMENT,
+  GET_UPCOMING_APPOINTMENTS,
 } from "@/api/_url/appoinment/url";
 import CustomAxios from "@/utils/axiosInstance";
 
@@ -51,5 +52,21 @@ export const scheduleAppoinment = async (
     return response;
   } catch (error) {
     return error;
+  }
+};
+
+export const getUpcomingAppointments = async () => {
+  try {
+    const response = await CustomAxios({
+      method: "GET",
+      baseURL: BACKEND_BASE_URL,
+      url: GET_UPCOMING_APPOINTMENTS,
+    });
+    console.log("upcoming appointments", response);
+
+    return response;
+  } catch (error: any) {
+    console.log(error);
+    return error.response;
   }
 };
