@@ -63,9 +63,10 @@ export default function AppoinmentList() {
                         setToggleToday(!toggleToday);
                         setToggleLoading(true);
                     }}
+                    className="my-4"
                 >
                     <CalendarCheck className="mr-2 h-4 w-4" />
-                    Today Only
+                    {toggleToday ? "Today Appointments" : "All Appointments"}
                 </Toggle>
             </div>
         )}
