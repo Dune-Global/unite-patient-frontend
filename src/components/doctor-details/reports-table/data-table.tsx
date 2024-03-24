@@ -28,7 +28,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/common/Button";
+import { Button as ShadButton } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { UniteModal } from "@/components/common/UniteModal";
@@ -36,6 +37,7 @@ import { MedicalInformationDataTable } from "../medical-history-table/data-table
 import { IMedicalInformation } from "@/types/medical-information";
 import { getAllMedicalInformation } from "@/data/mock/medical-information";
 import { connectedDoctorsColumns } from "../medical-history-table/columns";
+import { getDoctorListAndAccessInfo } from "@/api/reports/reportsAPI";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -72,18 +74,28 @@ export function MedicalReportsDataTable<TData, TValue>({
     },
   });
 
-  useEffect(() => {
-    const getAllMedicalInformationActionHandler = async () => {
-      const data = await getAllMedicalInformation();
-      setConnectedDoctors(data);
-    };
-    getAllMedicalInformationActionHandler();
-  }, []);
-
   const handleRowClick = (rowData: any) => {
     setSelectedRow(rowData);
     setIsModalOpen(true);
   };
+
+  useEffect(() => {
+    const getDoctorListAndAccessInfoActionHandler = async (
+      reportId: string
+    ) => {
+      const res = await getDoctorListAndAccessInfo(reportId);
+      console.log("\n\n\ndoctor list and access info res", res.data);
+      if (res.data) {
+        setConnectedDoctors(res.data.doctorsAllowed);
+      } else {
+        console.error(
+          "Unexpected response from getDoctorListAndAccessInfo:",
+          res
+        );
+      }
+    };
+    getDoctorListAndAccessInfoActionHandler(selectedRow?._id);
+  }, [selectedRow]);
 
   return (
     <>
@@ -193,29 +205,52 @@ export function MedicalReportsDataTable<TData, TValue>({
               <MedicalInformationDataTable
                 columns={connectedDoctorsColumns}
                 data={connectedDoctors}
+                reportUrl={selectedRow?.reportUrl}
+                reportId={selectedRow?._id}
               />
             </div>
           </div>
         }
+        // footer={
+        //   <div className="flex justify-start gap-6 w-full">
+        //     <Button variant="default" size="lg">
+        //       Save changes
+        //     </Button>
+
+        //     <Button
+        //       variant="outline"
+        //       size="lg"
+        //       onClick={() => window.open(selectedRow?.reportUrl, "_blank")}
+        //     >
+        //       View report
+        //     </Button>
+        //   </div>
+        // }
       />
 
       <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
+        <div className="flex-1 text-sm text-muted-foreground">
+          {table.getFilteredSelectedRowModel().rows.length} of{" "}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
+        </div>
+        <div className="space-x-2">
+          <ShadButton
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </ShadButton>
+          <ShadButton
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </ShadButton>
+        </div>
       </div>
     </>
   );
