@@ -96,7 +96,7 @@ export function MedicalReportsDataTable<TData, TValue>({
       }
     };
     getDoctorListAndAccessInfoActionHandler(selectedRow?._id);
-  }, [selectedRow, isModalOpen]);
+  }, [selectedRow]);
 
   return (
     <>

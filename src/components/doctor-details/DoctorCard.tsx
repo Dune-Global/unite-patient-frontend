@@ -1,17 +1,10 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import { Button } from "../common/Button";
 import { IDoctorCard } from "@/types/doctor-card";
 import { UniteModal } from "../common/UniteModal";
-import { MedicalInformationDataTable } from "./medical-history-table/data-table";
-import { IMedicalInformation } from "@/types/medical-information";
-import { getAllMedicalInformation } from "@/data/mock/medical-information";
-import { connectedDoctorsColumns } from "./medical-history-table/columns";
-import { MedicalReportsDataTable } from "./reports-table/data-table";
-import { IMedicalReports } from "@/types/medical-reports";
-import { getAllMedicalReports } from "@/data/mock/medical-reports";
-import { reportColumns } from "./reports-table/columns";
+import HistoryPermissionTable from "./medical-history-table/HistoryPermissionTable";
+import { useParams } from "next/navigation";
+import { getAllConnectedDoctors } from "@/api/history/historyAPI";
 
 const DoctorCard: React.FC<IDoctorCard> = ({
   image,
@@ -26,26 +19,41 @@ const DoctorCard: React.FC<IDoctorCard> = ({
   isClinic,
   clinicName,
   clinicAddress,
+  _id,
 }) => {
-  const [infoData, setInfoData] = useState<IMedicalInformation[]>([]);
+  const params = useParams();
+  const sessionId = Array.isArray(params.sessionId)
+    ? params.sessionId[0]
+    : params.sessionId;
 
-  const [reportsData, setReportsData] = useState<IMedicalReports[]>([]);
-
-  useEffect(() => {
-    const getAllMedicalInformationActionHandler = async () => {
-      const data = await getAllMedicalInformation();
-      setInfoData(data);
-    };
-    getAllMedicalInformationActionHandler();
-  }, []);
+  const [infoData, setInfoData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    const getAllMedicalReportsActionHandler = async () => {
-      const data = await getAllMedicalReports();
-      setReportsData(data);
+    const getDoctorListAndAccessInfoActionHandler = async (
+      patientSessionId: string
+    ) => {
+      const res = await getAllConnectedDoctors(patientSessionId);
+      console.log("\n\n\ndoctor list and access info res", res.data);
+      if (res.data) {
+        setInfoData(res.data.allowedDoctors);
+      } else {
+        console.error(
+          "Unexpected response from getDoctorListAndAccessInfo:",
+          res
+        );
+      }
     };
-    getAllMedicalReportsActionHandler();
+    if (_id) getDoctorListAndAccessInfoActionHandler(_id);
   }, []);
+
+  const handleShowHistory = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="max-w-md mx-auto bg-ugray-0 py-4 shadow-md rounded-lg overflow-hidden">
@@ -61,10 +69,13 @@ const DoctorCard: React.FC<IDoctorCard> = ({
           <div className="flex flex-col gap-4">
             <UniteModal
               title="Show Medical Information"
+              isOpen={isModalOpen}
+              onClose={handleCloseModal}
               content={
-                <MedicalInformationDataTable
-                  columns={connectedDoctorsColumns}
+                <HistoryPermissionTable
                   data={infoData}
+                  isModalOpen={isModalOpen}
+                  patientSessionId={sessionId}
                 />
               }
               footer={
@@ -77,24 +88,6 @@ const DoctorCard: React.FC<IDoctorCard> = ({
                 Show Medical History
               </Button>
             </UniteModal>
-            {/* <UniteModal
-              title="Show Medical Reports"
-              content={
-                <MedicalReportsDataTable
-                  columns={reportColumns}
-                  data={reportsData}
-                />
-              }
-              footer={
-                <Button variant="default" size="lg">
-                  Save Changes
-                </Button>
-              }
-            >
-              <Button variant="outline" size="sm" className="px-8">
-                Show Reports
-              </Button>
-            </UniteModal> */}
           </div>
         </div>
       </div>

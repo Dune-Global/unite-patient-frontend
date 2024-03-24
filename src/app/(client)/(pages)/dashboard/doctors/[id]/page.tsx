@@ -65,6 +65,7 @@ const Page: React.FC<PatientHistoryProps> = ({ patientHistory }) => {
     >
       <div className="md:col-span-1">
         <DoctorCard
+          _id={doctorDetails._id}
           image={doctorDetails.imgUrl}
           name={`
             ${doctorDetails.firstName}  ${doctorDetails.lastName}
