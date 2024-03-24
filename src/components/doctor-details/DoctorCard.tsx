@@ -5,6 +5,7 @@ import { UniteModal } from "../common/UniteModal";
 import HistoryPermissionTable from "./medical-history-table/HistoryPermissionTable";
 import { useParams } from "next/navigation";
 import { getAllConnectedDoctors } from "@/api/history/historyAPI";
+import { IMedicalInformation } from "@/types/medical-information";
 
 const DoctorCard: React.FC<IDoctorCard> = ({
   image,
@@ -24,7 +25,7 @@ const DoctorCard: React.FC<IDoctorCard> = ({
   const params = useParams();
   const sessionId = Array.isArray(params.id) ? params.id[0] : params.id;
 
-  const [infoData, setInfoData] = useState([]);
+  const [infoData, setInfoData] = useState<IMedicalInformation[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -33,7 +34,8 @@ const DoctorCard: React.FC<IDoctorCard> = ({
     ) => {
       const res = await getAllConnectedDoctors(patientSessionId);
       console.log("\n\n\ndoctor list and access info res", res.data);
-      if (res.data) {
+      if (res.data && Array.isArray(res.data.allowedDoctors)) {
+        // Check if allowedDoctors is an array
         setInfoData(res.data.allowedDoctors);
       } else {
         console.error(
@@ -65,14 +67,16 @@ const DoctorCard: React.FC<IDoctorCard> = ({
               title="Show Medical Information"
               onClose={handleCloseModal}
               content={
-                <HistoryPermissionTable
-                  data={infoData}
-                  isModalOpen={isModalOpen}
-                  patientSessionId={sessionId}
-                />
+                infoData !== null ? (
+                  <HistoryPermissionTable
+                    data={infoData}
+                    isModalOpen={isModalOpen}
+                    patientSessionId={sessionId}
+                  />
+                ) : null
               }
             >
-              <Button variant="default" size="sm">
+              <Button onClick={() => isModalOpen} variant="default" size="sm">
                 Show Medical History
               </Button>
             </UniteModal>
