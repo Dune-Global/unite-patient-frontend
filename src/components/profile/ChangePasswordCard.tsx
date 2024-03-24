@@ -25,11 +25,10 @@ const formSchema = z.object({
   newPassword: z
     .string()
     .min(8, { message: "password must contain at least 8 characters" })
-    .max(50, { message: "password can't contain more than 50 characters" }),
-  confirmPassword: z
-    .string()
-    .min(8, { message: "password must contain at least 8 characters" })
-    .max(50, { message: "password can't contain more than 50 characters" }),
+    .max(50, { message: "password can't contain more than 50 characters" })
+    .refine(value => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value), {
+      message: "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character. Spaces are not allowed."
+    }),
 });
 
 const formBaseStyles = {
@@ -42,19 +41,20 @@ export default function AvailabilityCard() {
     defaultValues: {
       currentPassword: "",
       newPassword: "",
-      confirmPassword: "",
     },
   });
 
-  const handleChangePassword = async (values: any) => {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const res = await updatePassword(values);
-      console.log(res);
+      const res = await updatePassword({
+        oldPassword: values.currentPassword,
+        newPassword: values.newPassword,
+      });
 
       if (res.status === 200) {
         toast({
-          title: "Password Changed Successfully",
-          description: ("You can now login with your new password"),
+          title: "Password updated successfully!",
+          description: "Your password has been updated.",
         });
       } else {
         toast({
@@ -64,38 +64,33 @@ export default function AvailabilityCard() {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error(
+        "There has been a problem with your fetch operation:",
+        error
+      );
       toast({
-        title: "Password change failed",
+        title: "Password must match!",
         description: "Please try again",
         variant: "destructive",
       });
     }
-  };
-
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
+  }
 
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleEyeClick = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleEyeClick2 = () => {
+  const handleEyeClickNew = () => {
     setShowNewPassword(!showNewPassword);
   };
-
-  const handleEyeClick3 = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
-
   return (
     <div>
       <Form {...form}>
         <form
-          onSubmit={handleChangePassword}
+          onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-3 px-2 mb-2 "
         >
           <div className="space-y-5 snap-y flex flex-col">
@@ -108,27 +103,28 @@ export default function AvailabilityCard() {
                   control={form.control}
                   name="currentPassword"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="relative">
                       <FormControl>
                         <Input
+                          type={showPassword ? "text" : "password"}
                           placeholder="Enter current password"
                           {...field}
                         />
                       </FormControl>
                       <button
-                        className="absolute right-2 top-[0.65rem] text-xl"
+                        className="absolute right-2 top-[0.5rem] text-xl"
                         type="button"
                         onClick={handleEyeClick}
                       >
                         {showPassword ? (
                           <EyeOff
-                            size={25}
+                            size={22}
                             strokeWidth={1}
                             className="text-black"
                           />
                         ) : (
                           <Eye
-                            size={25}
+                            size={22}
                             strokeWidth={1}
                             className="text-black"
                           />
@@ -141,70 +137,34 @@ export default function AvailabilityCard() {
                   )}
                 />
               </div>
-            </div>
-            <div className="flex flex-col lg:flex-row gap-4">
               <div className="snap-end w-full">
                 <div className="text-sm pb-2 text-ugray-400">New Password</div>
                 <FormField
                   control={form.control}
                   name="newPassword"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="relative">
                       <FormControl>
-                        <Input placeholder="Enter new password" {...field} />
+                        <Input
+                          type={showNewPassword ? "text" : "password"}
+                          placeholder="Enter new password"
+                          {...field}
+                        />
                       </FormControl>
                       <button
-                        className="absolute right-2 top-[0.65rem] text-xl"
+                        className="absolute right-2 top-[0.5rem] text-xl"
                         type="button"
-                        onClick={handleEyeClick2}
+                        onClick={handleEyeClickNew}
                       >
                         {showNewPassword ? (
                           <EyeOff
-                            size={25}
+                            size={22}
                             strokeWidth={1}
                             className="text-black"
                           />
                         ) : (
                           <Eye
-                            size={25}
-                            strokeWidth={1}
-                            className="text-black"
-                          />
-                        )}
-                      </button>
-                      <FormMessage
-                        className={`${formBaseStyles.errorMessages}`}
-                      />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="snap-end w-full">
-                <div className="text-sm pb-2 text-ugray-400">
-                  Number of Appointments
-                </div>
-                <FormField
-                  control={form.control}
-                  name="confirmPassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input placeholder="Re-enter new password" {...field} />
-                      </FormControl>
-                      <button
-                        className="absolute right-2 top-[0.65rem] text-xl"
-                        type="button"
-                        onClick={handleEyeClick3}
-                      >
-                        {showConfirmPassword ? (
-                          <EyeOff
-                            size={25}
-                            strokeWidth={1}
-                            className="text-black"
-                          />
-                        ) : (
-                          <Eye
-                            size={25}
+                            size={22}
                             strokeWidth={1}
                             className="text-black"
                           />

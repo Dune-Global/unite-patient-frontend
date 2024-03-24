@@ -42,16 +42,22 @@ export default function DoctorsList() {
   return (
     <div className="bg-ugray-0 mt-6 rounded-lg p-4">
       <div className="flex flex-col gap-7">
-        {doctorList.map((doctor: any) => (
-          <DoctorCard
-            key={doctor.sessionId}
-            firstName={doctor.doctor.firstName}
-            lastName={doctor.doctor.lastName}
-            designation={doctor.doctor.designation}
-            imageUrl={doctor.doctor.imgUrl}
-            status={doctor.status}
-          />
-        ))}
+        {doctorList.length > 0 ? (
+           doctorList.map((doctor: any) => (
+            <DoctorCard
+              key={doctor.sessionId}
+              firstName={doctor.doctor.firstName}
+              lastName={doctor.doctor.lastName}
+              designation={doctor.doctor.designation}
+              imageUrl={doctor.doctor.imgUrl}
+              status={doctor.status}
+            />
+          )) 
+        ): (
+            <div className="text-center text-ugray-400">
+                No doctors available
+            </div>
+        )}
       </div>
     </div>
   );

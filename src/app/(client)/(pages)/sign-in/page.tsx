@@ -47,6 +47,7 @@ export default function SignIn() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,11 +62,11 @@ export default function SignIn() {
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
     try {
       const res = await loginAccount(values);
-      // console.warn(res.status);
-      console.warn(res.status === 401);
       if (res.status === 401) {
+        setIsLoading(false);
         return toast({
           variant: "destructive",
           title: "Uh oh! Something went wrong.",
@@ -86,6 +87,7 @@ export default function SignIn() {
         action: <ToastAction altText="Try again">Go to home</ToastAction>,
       });
       router.push("/dashboard/overview");
+      setIsLoading(false);
     } catch (error) {
       toast({
         variant: "destructive",
@@ -93,6 +95,7 @@ export default function SignIn() {
         description: "Email or Password is incorrect.",
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
+      setIsLoading(false);
       console.error(error);
     }
     console.log(values);
@@ -193,8 +196,12 @@ export default function SignIn() {
                     </Link>
                   </div>
                 </div>
-                <div className="">
-                  <Button className="w-full bg-ublue-100 text-ugray-0">
+                <div>
+                  <Button
+                    size="lg"
+                    loading={isLoading}
+                    className="w-full bg-ublue-100 text-ugray-0"
+                  >
                     Login
                   </Button>
                 </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import {
   getDoctorDetailsOfPatients,
   getLatestAppoinments,
@@ -9,9 +9,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import LatestAppoinmentCard from "./latest-appoinments-card";
 import { DoctorCardSkeleton } from "../doctors/doctor-card-skeleton";
-import { setAppointmentList } from "@/store/reducers/doctor-reducer";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import {
+  setAllAppointments,
+  setAppointmentList,
+  setTodayAppointments,
+} from "@/store/reducers/doctor-reducer";
+import { ChevronLeftIcon, ChevronRightIcon, Loader2 } from "lucide-react";
 import Calender from "./calender";
+import { getTodayAppoinments } from "@/api/patient-details/patientDetailsAPI";
+import { CalendarCheck } from "lucide-react";
+import { Toggle } from "@/components/ui/toggle";
+import { set } from "date-fns";
 
 export default function AppoinmentList() {
   const dispatch = useDispatch();
@@ -22,16 +30,26 @@ export default function AppoinmentList() {
     (state: RootState) => state.doctorState.selectedDate
   );
   const [loading, setLoading] = useState(true);
+  const [toggleToday, setToggleToday] = useState(true);
+  const [toggleLoading, setToggleLoading] = useState(false);
 
   useEffect(() => {
-    console.log(selectedDate?.toLocaleDateString("en-US"));
-  }, [selectedDate]);
-
-  useEffect(() => {
-    getLatestAppoinments()
+    getTodayAppoinments(toggleToday)
       .then((res) => {
-        console.log(res.data);
         dispatch(setAppointmentList(res.data));
+        setLoading(false);
+        setToggleLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
+  }, [toggleToday, setToggleToday, dispatch]);
+
+  useEffect(() => {
+    getTodayAppoinments(true)
+      .then((res) => {
+        dispatch(setTodayAppointments(res.data));
         setLoading(false);
       })
       .catch((error) => {
@@ -41,17 +59,16 @@ export default function AppoinmentList() {
   }, []);
 
   useEffect(() => {
-    if (selectedDate) {
-      const formattedDate = selectedDate.toLocaleDateString("en-US");
-      const filteredAppointments = appoinmentList.filter((appointment) => {
-        const appointmentDate = new Date(appointment.date).toLocaleDateString(
-          "en-US"
-        );
-        return appointmentDate === formattedDate;
+    getTodayAppoinments(false)
+      .then((res) => {
+        dispatch(setAllAppointments(res.data));
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
       });
-      console.log(filteredAppointments);
-    }
-  }, [selectedDate, appoinmentList]);
+  }, []);
 
   if (loading) {
     return (
@@ -66,20 +83,44 @@ export default function AppoinmentList() {
   }
 
   return (
-    <div className="bg-ugray-0 mt-6 rounded-lg p-4">
+    <div className="bg-ugray-0 mt-6 rounded-lg p-4 flex flex-col">
+      {appoinmentList.length > 0 && (
+        <div className="flex justify-center items-center scroll-my-36">
+          <Toggle
+            onClick={() => {
+              setToggleToday(!toggleToday);
+              setToggleLoading(true);
+            }}
+            className="my-4"
+          >
+            <CalendarCheck className="mr-2 h-4 w-4" />
+            {toggleToday ? "Today Appointments" : "All Appointments"}
+          </Toggle>
+        </div>
+      )}
       <div className="flex flex-col gap-7">
-        {/* {appoinmentList.map((doctor: any) => (
-          <LatestAppoinmentCard
-            key={doctor.sessionId}
-            firstName={doctor.doctor.firstName}
-            lastName={doctor.doctor.lastName}
-            designation={doctor.doctor.designation}
-            imageUrl={doctor.doctor.imgUrl}
-            status={doctor.status}
-          />
-        ))} */}
+        {appoinmentList.length > 0 ? (
+          appoinmentList.map((appoinment: any) => (
+            <LatestAppoinmentCard
+              key={appoinment.sessionTime}
+              firstName={appoinment.firstName}
+              lastName={appoinment.lastName}
+              appoinmentNo={appoinment.appointmentNumber}
+              imageUrl={appoinment.imgUrl}
+              time={appoinment.sessionTime}
+            />
+          ))
+        ) : (
+          <p className="text-center text-xl font-medium my-10">
+            No appointments
+          </p>
+        )}
       </div>
-      <Calender />
+      {toggleLoading && (
+        <div className="mt-7">
+          <DoctorCardSkeleton />
+        </div>
+      )}
     </div>
   );
 }

@@ -6,11 +6,13 @@ import { Calendar, User, MessageSquareMoreIcon, Clock } from "lucide-react";
 import { useSelector } from "react-redux";
 
 export default function Summary() {
-  const doctorsList = useSelector(
-    (state: RootState) => state.doctorState.doctorList
+  const { doctorList, allAppointments, todayAppointments } = useSelector(
+    (state: RootState) => state.doctorState
   );
 
-  const doctorsCount = doctorsList.length;
+  const doctorsCount = doctorList.length;
+  const allAppointmentsCount = allAppointments.length;
+  const todayAppointmentsCount = todayAppointments.length;
 
   return (
     <div className="mt-6 flex flex-row flex-wrap justify-between">
@@ -18,7 +20,7 @@ export default function Summary() {
         cardColor="bg-uindigo-400"
         description="Today's Appointments"
         Icon={Calendar}
-        value="0"
+        value={todayAppointmentsCount.toString()}
       />
       <SummaryCard
         cardColor="bg-upink-400"
@@ -36,7 +38,7 @@ export default function Summary() {
         cardColor="bg-umint-600"
         description="Total Appointments"
         Icon={Clock}
-        value="16"
+        value={allAppointmentsCount.toString()}
       />
     </div>
   );
