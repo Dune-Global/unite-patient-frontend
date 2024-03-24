@@ -13,7 +13,7 @@ export const updatePatient = async (values: {
   firstName: string;
   lastName: string;
   email: string;
-  dateOfBirth: Date;
+  dateOfBirth: string;
   gender: string;
   imgUrl: string;
   mobile: string;

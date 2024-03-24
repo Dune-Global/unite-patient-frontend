@@ -80,23 +80,23 @@ export default function EditProfileCard() {
 
   const [patient, setPatient] = useState<PatientType | null>(null);
 
-if (user) {
+  if (user) {
     const res: any = getUserDetails(user?.id);
     if (res.status === 200) {
-        setPatient(res.data);
+      setPatient(res.data);
     } else if (res.data) {
-        console.log(res.data.message);
+      console.log(res.data.message);
     } else {
-        console.log('No message available');
+      console.log("No message available");
     }
-}
+  }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       firstName: patient?.firstName || "",
-      lastName: "",
-      email: "",
+      lastName: patient?.lastName || "",
+      email: patient?.email || "",
       phoneNumber: "",
       dateOfBirth: "",
       gender: "",
@@ -108,23 +108,25 @@ if (user) {
     },
   });
 
-  // useEffect(() => {
-  //   if (user) {
-  //     getUserDetails(user.id)
-  //       .then((res: any) => {
-  //         if (res.status === 200) {
-  //           setPatient(res.data);
-  //           console.log(res.data);
-  //           console.log("res patient : " , patient);
-  //         } else {
-  //           console.log(res.data.message);
-  //         }
-  //       })
-  //       .catch((error: any) => {
-  //         console.error('There has been a problem with your fetch operation:', error);
-  //       });
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (user) {
+      getUserDetails(user.id)
+        .then((res: any) => {
+          if (res.status === 200) {
+            setPatient(res.data);
+            console.log(res.data);
+          } else {
+            console.log(res.data.message);
+          }
+        })
+        .catch((error: any) => {
+          console.error(
+            "There has been a problem with your fetch operation:",
+            error
+          );
+        });
+    }
+  }, [user]);
 
   const handleVerifyEmail = async () => {
     try {
@@ -153,15 +155,28 @@ if (user) {
     }
   };
 
-  const handleEditProfile = async (values: any) => {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const res = await updatePatient(values);
+      const res = await updatePatient({
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        dateOfBirth: "",
+        gender: "",
+        imgUrl: "",
+        mobile: "",
+        weight: 0,
+        height: 0,
+        bloodGroup: "",
+        allergies: "",
+        hereditaryDiseases: ""
+      });
       console.log(res);
 
       if (res.status === 200) {
         toast({
-          title: "Patient Updated Successfully",
-          description: "Your details updated successfully",
+          title: "Password updated successfully!",
+          description: "Your password has been updated.",
         });
       } else {
         toast({
@@ -171,19 +186,25 @@ if (user) {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error(
+        "There has been a problem with your fetch operation:",
+        error
+      );
       toast({
-        title: "Patient update failed",
+        title: "Password update failed",
         description: "Please try again",
         variant: "destructive",
       });
     }
-  };
+  }
 
   return (
     <div>
       <Form {...form}>
-        <form className="space-y-3 px-2 mb-2 ">
+        <form
+          className="space-y-3 px-2 mb-2 "
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           {ProfileInfo.map((profile) => (
             <div className="space-y-5 snap-y flex flex-col" key={profile.id}>
               <div className="flex flex-col lg:flex-row gap-4">
@@ -289,7 +310,7 @@ if (user) {
               </div>
               <div className="flex flex-col lg:flex-row gap-4 w-full">
                 <div className="snap-end w-full">
-                  <div className="text-base">Date of Birth</div>
+                  <div className="text-sm pb-2 text-ugray-400">Date of Birth</div>
                   <FormField
                     control={form.control}
                     name="dateOfBirth"
@@ -301,7 +322,7 @@ if (user) {
                               <Button
                                 variant={"outline"}
                                 className={cn(
-                                  "w-full border-ugray-100 pl-3 text-left font-normal",
+                                  "w-full border-ugray-100 pl-3 h-12 text-left font-normal",
                                   !field.value && "text-muted-foreground"
                                 )}
                               >
@@ -486,7 +507,6 @@ if (user) {
                     type="submit"
                     size="lg"
                     className="text-ugray-0 bg-ublue-200"
-                    onClick={handleEditProfile}
                   >
                     Save Changes
                   </Button>
