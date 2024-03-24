@@ -4,12 +4,16 @@ interface DoctorState {
   doctorList: any[];
   appointmentList: any[];
   selectedDate: Date | null;
+  todayAppointments: any[];
+  allAppointments: any[];
 }
 
 const initialState: DoctorState = {
   doctorList: [],
   appointmentList: [],
   selectedDate: null,
+  todayAppointments: [],
+  allAppointments: [],
 };
 
 const doctorStateSlice = createSlice({
@@ -25,9 +29,20 @@ const doctorStateSlice = createSlice({
     setSelectedDate(state, action: PayloadAction<Date | null>) {
       state.selectedDate = action.payload;
     },
+    setTodayAppointments(state, action: PayloadAction<any[]>) {
+      state.todayAppointments = action.payload;
+    },
+    setAllAppointments(state, action: PayloadAction<any[]>) {
+      state.allAppointments = action.payload;
+    },
   },
 });
 
-export const { setDoctorList, setAppointmentList, setSelectedDate } =
-  doctorStateSlice.actions;
+export const {
+  setDoctorList,
+  setAppointmentList,
+  setSelectedDate,
+  setAllAppointments,
+  setTodayAppointments,
+} = doctorStateSlice.actions;
 export default doctorStateSlice.reducer;
