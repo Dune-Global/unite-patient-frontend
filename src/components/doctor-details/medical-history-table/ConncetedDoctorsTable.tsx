@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IMedicalInformation } from "@/types/medical-information";
 import { Button } from "@/components/common/Button";
 import { updateReportAccess } from "@/api/reports/reportsAPI";
@@ -16,13 +16,26 @@ const ConnectedDoctorsTable: React.FC<ConnectedDoctorsTableProps> = ({
 }) => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
+  // Update selectedRows when the data or reportId changes
+  useEffect(() => {
+    // Reset selectedRows to reflect the current permissions
+    const newSelectedRows = data.reduce((acc: string[], doctor) => {
+      if (doctor.allowed) {
+        acc.push(doctor.doctorId);
+      }
+      return acc;
+    }, []);
+    setSelectedRows(newSelectedRows);
+  }, [data, reportId]);
+
   const toggleRow = (doctorId: string) => {
-    const isSelected = selectedRows.includes(doctorId);
-    if (isSelected) {
-      setSelectedRows(selectedRows.filter((id) => id !== doctorId));
-    } else {
-      setSelectedRows([...selectedRows, doctorId]);
-    }
+    setSelectedRows((prevSelectedRows) => {
+      if (prevSelectedRows.includes(doctorId)) {
+        return prevSelectedRows.filter((id) => id !== doctorId);
+      } else {
+        return [...prevSelectedRows, doctorId];
+      }
+    });
   };
 
   const handlePermissionChange = async () => {
@@ -32,14 +45,10 @@ const ConnectedDoctorsTable: React.FC<ConnectedDoctorsTableProps> = ({
           const allowed = selectedRows.includes(doctor.doctorId);
           if (reportId) {
             await updateReportAccess(reportId, doctor.doctorId, allowed);
-            console.log("reportId:", reportId);
-            console.log("doctorId:", doctor.doctorId);
-            console.log("allowed:", allowed);
           }
         })
       );
       console.log("Permissions updated successfully");
-      console.log("selectedRows", selectedRows);
     } catch (error) {
       console.error("Error calling updateReportAccess:", error);
     }
@@ -78,7 +87,7 @@ const ConnectedDoctorsTable: React.FC<ConnectedDoctorsTableProps> = ({
                   type="checkbox"
                   checked={selectedRows.includes(doctor.doctorId)}
                   onChange={() => toggleRow(doctor.doctorId)}
-                  className=" h-4 w-4 text-ublue-200 border-ublue-200 rounded-md"
+                  className="h-4 w-4 text-ublue-200 border-ublue-200 rounded-md"
                 />
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
