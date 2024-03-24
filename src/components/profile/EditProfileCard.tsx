@@ -45,10 +45,10 @@ if (tempUser !== undefined && tempUser !== null) {
 }
 
 const formSchema = z.object({
-  firstName: z.string().nonempty({ message: "First name is required" }),
-  lastName: z.string().nonempty({ message: "Last name is required" }),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
   email: z.string().nonempty({ message: "Email is required" }),
-  phoneNumber: z.string().nonempty({ message: "Contact number is required" }),
+  phoneNumber: z.string().optional(),
   dateOfBirth: z.date(),
   gender: z.string().optional(),
   height: z.number().optional(),
@@ -88,6 +88,7 @@ export default function EditProfileCard() {
         console.log(user);
         const res: any = await getUserDetails(user?.id);
         if (res.status === 200) {
+          console.log("hoooo", res.data)
           setPatient(res.data);
         } else if (res.data) {
           console.log(res.data.message);
@@ -102,9 +103,9 @@ export default function EditProfileCard() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: patient?.firstName || "",
-      lastName: patient?.lastName || "",
-      email: patient?.email || "",
+      firstName: patient?.firstName,
+      lastName: patient?.lastName,
+      email: patient?.email,
       phoneNumber: "",
       dateOfBirth: new Date() || null,
       gender: "",
@@ -146,6 +147,7 @@ export default function EditProfileCard() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    console.log("hi patient", patient);
 
     const obj: doctorProfileObject = convertToObject(values);
 
@@ -198,7 +200,7 @@ export default function EditProfileCard() {
                         <FormControl>
                           <Input
                             placeholder="Enter first name"
-                            defaultValue={profile.fName}
+                            defaultValue={patient?.firstName}
                             {...field}
                           />
                         </FormControl>
@@ -219,7 +221,7 @@ export default function EditProfileCard() {
                         <FormControl>
                           <Input
                             placeholder="Enter last name"
-                            defaultValue={profile.lName}
+                            defaultValue={patient?.lastName}
                             {...field}
                           />
                         </FormControl>
@@ -242,7 +244,7 @@ export default function EditProfileCard() {
                         <FormControl>
                           <Input
                             placeholder="Enter email address"
-                            defaultValue={profile.email}
+                            defaultValue={patient?.email}
                             {...field}
                           />
                         </FormControl>
@@ -276,7 +278,7 @@ export default function EditProfileCard() {
                         <FormControl>
                           <Input
                             placeholder="Enter your contact number"
-                            defaultValue={profile.contactNumber}
+                            defaultValue={patient?.mobile}
                             {...field}
                           />
                         </FormControl>
@@ -347,7 +349,7 @@ export default function EditProfileCard() {
                         <FormControl>
                           <Select>
                             <SelectTrigger className="w-full">
-                              <SelectValue placeholder={profile.gender} />
+                              <SelectValue placeholder={patient?.gender} />
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="male">Male</SelectItem>
@@ -377,7 +379,7 @@ export default function EditProfileCard() {
                         <FormControl>
                           <Input
                             placeholder="Enter SLMC number"
-                            defaultValue={profile.height}
+                            defaultValue={patient?.height}
                             {...field}
                           />
                         </FormControl>
@@ -398,7 +400,7 @@ export default function EditProfileCard() {
                         <FormControl>
                           <Input
                             placeholder="Enter NIC number"
-                            defaultValue={profile.weight}
+                            defaultValue={patient?.weight}
                             {...field}
                           />
                         </FormControl>
@@ -421,7 +423,7 @@ export default function EditProfileCard() {
                         <FormControl>
                           <Input
                             placeholder="Enter blood group"
-                            defaultValue={profile.bloodGroup}
+                            defaultValue={patient?.bloodGroup}
                             {...field}
                           />
                         </FormControl>
@@ -444,7 +446,7 @@ export default function EditProfileCard() {
                         <FormControl>
                           <Input
                             placeholder="Enter hereditary diseases"
-                            defaultValue={profile.hereditaryDiseases}
+                            defaultValue={patient?.hereditaryDiseases}
                             {...field}
                           />
                         </FormControl>
