@@ -28,8 +28,8 @@ export const getAllConnectedDoctors = async (patientSessionId: string) => {
  * Update history access
  */
 
-export const updateReportAccess = async (
-  sessionId: string,
+export const updateHistoryAccess = async (
+  patientSessionId: string,
   doctorId: string,
   allowed: boolean
 ) => {
@@ -37,7 +37,10 @@ export const updateReportAccess = async (
   return await CustomAxios({
     method: "PUT",
     baseURL: BACKEND_BASE_URL,
-    url: UPDATE_HISTORY_ACCESS_URL.replace(":sessionId", sessionId),
+    url: UPDATE_HISTORY_ACCESS_URL.replace(
+      ":patientSessionId",
+      patientSessionId
+    ),
     data: {
       doctorsAllowed: [
         {
