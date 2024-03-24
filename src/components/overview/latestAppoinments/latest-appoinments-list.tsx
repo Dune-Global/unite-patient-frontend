@@ -1,25 +1,37 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getDoctorDetailsOfPatients } from "@/api/doctor-details/doctorDetailsAPI";
+import {
+  getDoctorDetailsOfPatients,
+  getLatestAppoinments,
+} from "@/api/doctor-details/doctorDetailsAPI";
 import { useSelector, useDispatch } from "react-redux";
-import { setDoctorList } from "@/store/reducers/doctor-reducer";
 import { RootState } from "@/store";
-import { DoctorCardSkeleton } from "./doctor-card-skeleton";
 import LatestAppoinmentCard from "./latest-appoinments-card";
+import { DoctorCardSkeleton } from "../doctors/doctor-card-skeleton";
+import { setAppointmentList } from "@/store/reducers/doctor-reducer";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import Calender from "./calender";
 
-export default function DoctorsList() {
+export default function AppoinmentList() {
   const dispatch = useDispatch();
-  const doctorList = useSelector(
-    (state: RootState) => state.doctorState.doctorList
+  const appoinmentList = useSelector(
+    (state: RootState) => state.doctorState.appointmentList
+  );
+  const selectedDate = useSelector(
+    (state: RootState) => state.doctorState.selectedDate
   );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getDoctorDetailsOfPatients()
+    console.log(selectedDate?.toLocaleDateString("en-US"));
+  }, [selectedDate]);
+
+  useEffect(() => {
+    getLatestAppoinments()
       .then((res) => {
         console.log(res.data);
-        dispatch(setDoctorList(res.data));
+        dispatch(setAppointmentList(res.data));
         setLoading(false);
       })
       .catch((error) => {
@@ -27,6 +39,19 @@ export default function DoctorsList() {
         setLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    if (selectedDate) {
+      const formattedDate = selectedDate.toLocaleDateString("en-US");
+      const filteredAppointments = appoinmentList.filter((appointment) => {
+        const appointmentDate = new Date(appointment.date).toLocaleDateString(
+          "en-US"
+        );
+        return appointmentDate === formattedDate;
+      });
+      console.log(filteredAppointments);
+    }
+  }, [selectedDate, appoinmentList]);
 
   if (loading) {
     return (
@@ -43,7 +68,7 @@ export default function DoctorsList() {
   return (
     <div className="bg-ugray-0 mt-6 rounded-lg p-4">
       <div className="flex flex-col gap-7">
-        {doctorList.map((doctor: any) => (
+        {/* {appoinmentList.map((doctor: any) => (
           <LatestAppoinmentCard
             key={doctor.sessionId}
             firstName={doctor.doctor.firstName}
@@ -52,8 +77,9 @@ export default function DoctorsList() {
             imageUrl={doctor.doctor.imgUrl}
             status={doctor.status}
           />
-        ))}
+        ))} */}
       </div>
+      <Calender />
     </div>
   );
 }
