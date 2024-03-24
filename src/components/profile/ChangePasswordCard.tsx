@@ -46,34 +46,34 @@ export default function AvailabilityCard() {
     },
   });
 
-  const handleChangePassword = async (values: any) => {
+async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const res = await updatePassword(values);
-      console.log(res);
+        const res = await updatePassword({
+            oldPassword: values.currentPassword,
+            newPassword: values.newPassword,
+        });
 
-      if (res.status === 200) {
-        toast({
-          title: "Password Changed Successfully",
-          description: ("You can now login with your new password"),
-        });
-      } else {
-        toast({
-          title: "Something went wrong!",
-          description: res.data.message,
-          variant: "destructive",
-        });
-      }
+        if (res.status === 200) {
+            toast({
+                title: "Password updated successfully!",
+                description: "Your password has been updated.",
+            });
+        } else {
+            toast({
+                title: "Something went wrong!",
+                description: res.data.message,
+                variant: "destructive",
+            });
+        }
     } catch (error) {
-      console.log(error);
-      toast({
-        title: "Password change failed",
-        description: "Please try again",
-        variant: "destructive",
-      });
+        console.error('There has been a problem with your fetch operation:', error);
+        toast({
+            title: "Password must match!",
+            description: "Please try again",
+            variant: "destructive",
+        });
     }
-  };
-
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
+}
 
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -95,7 +95,7 @@ export default function AvailabilityCard() {
     <div>
       <Form {...form}>
         <form
-          onSubmit={handleChangePassword}
+          onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-3 px-2 mb-2 "
         >
           <div className="space-y-5 snap-y flex flex-col">
@@ -111,7 +111,7 @@ export default function AvailabilityCard() {
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="Enter current password"
+                          placeholder="Enter current password"                          
                           {...field}
                         />
                       </FormControl>

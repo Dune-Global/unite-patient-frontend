@@ -1,4 +1,3 @@
-import { set } from "date-fns";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface DoctorState {
