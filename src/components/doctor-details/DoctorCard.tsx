@@ -35,6 +35,7 @@ const DoctorCard: React.FC<IDoctorCard> = ({
       const res = await getAllConnectedDoctors(patientSessionId);
       console.log("\n\n\ndoctor list and access info res", res.data);
       if (res.data && Array.isArray(res.data.allowedDoctors)) {
+
         // Check if allowedDoctors is an array
         setInfoData(res.data.allowedDoctors);
       } else {
