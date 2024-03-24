@@ -147,7 +147,6 @@ export default function EditProfileCard() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-    console.log("hi patient", patient);
 
     const obj: patientProfileObject = convertToObject(values);
 
