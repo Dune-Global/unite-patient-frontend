@@ -7,16 +7,17 @@ interface ConnectedDoctorsTableProps {
   data: IMedicalInformation[];
   reportUrl?: string;
   reportId?: string;
+  isModalOpen?: boolean;
 }
 
 const ConnectedDoctorsTable: React.FC<ConnectedDoctorsTableProps> = ({
   data,
   reportId,
   reportUrl,
+  isModalOpen,
 }) => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
-  // Update selectedRows when the data or reportId changes
   useEffect(() => {
     // Reset selectedRows to reflect the current permissions
     const newSelectedRows = data.reduce((acc: string[], doctor) => {
@@ -26,7 +27,7 @@ const ConnectedDoctorsTable: React.FC<ConnectedDoctorsTableProps> = ({
       return acc;
     }, []);
     setSelectedRows(newSelectedRows);
-  }, [data, reportId]);
+  }, [data, reportId, updateReportAccess, setSelectedRows, isModalOpen]);
 
   const toggleRow = (doctorId: string) => {
     setSelectedRows((prevSelectedRows) => {
@@ -38,10 +39,32 @@ const ConnectedDoctorsTable: React.FC<ConnectedDoctorsTableProps> = ({
     });
   };
 
+  // const handlePermissionChange = async () => {
+  //   try {
+  //     await Promise.all(
+  //       data.map(async (doctor) => {
+  //         const allowed = selectedRows.includes(doctor.doctorId);
+  //         if (reportId) {
+  //           await updateReportAccess(reportId, doctor.doctorId, allowed);
+  //         }
+  //       })
+  //     );
+  //     console.log("Permissions updated successfully");
+  //   } catch (error) {
+  //     console.error("Error calling updateReportAccess:", error);
+  //   }
+  // };
+
   const handlePermissionChange = async () => {
     try {
+      // Filter out doctors whose permissions haven't changed
+      const doctorsToUpdate = data.filter(
+        (doctor) => selectedRows.includes(doctor.doctorId) !== doctor.allowed
+      );
+
+      // Update permissions only for doctors whose permissions have changed
       await Promise.all(
-        data.map(async (doctor) => {
+        doctorsToUpdate.map(async (doctor) => {
           const allowed = selectedRows.includes(doctor.doctorId);
           if (reportId) {
             await updateReportAccess(reportId, doctor.doctorId, allowed);
@@ -130,3 +153,5 @@ const ConnectedDoctorsTable: React.FC<ConnectedDoctorsTableProps> = ({
 };
 
 export default ConnectedDoctorsTable;
+
+
