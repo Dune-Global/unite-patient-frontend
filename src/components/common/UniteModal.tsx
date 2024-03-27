@@ -31,7 +31,7 @@ export function UniteModal({
     <div className="">
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogTrigger asChild>{children}</DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] md:max-w-[600px] border-ugray-0">
+        <DialogContent className="sm:max-w-[425px] md:max-w-[900px] md:min-w-[800px] border-ugray-0">
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{description}</DialogDescription>

@@ -7,10 +7,12 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ChevronDown } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../common/Button";
 import Progress from "./ProgressBar";
 import { Prescription, Stage } from "@/types/doctor-patient-details";
+import { UniteModal } from "../common/UniteModal";
+import PrescriptionView from "./PrescriptionView";
 
 interface HistoryAccordionProps {
   details: Prescription;
@@ -30,7 +32,13 @@ const HistoryAccordion: React.FC<HistoryAccordionProps> = ({
 }) => {
   console.log("\n\n\nHistoryAccordion props:", details);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const currentStage = STAGE_MAP[details.stage] || 1;
+
+  const handlePrescriptionClick = () => {
+    setIsModalOpen(true);
+  };
 
   return (
     <div
@@ -43,7 +51,15 @@ const HistoryAccordion: React.FC<HistoryAccordionProps> = ({
           !isLastItem ? "-left-2" : " -left-[6px] "
         } `}
       />
-      <div className="mb-3 pl-4 ">{details.sessionDate}</div>
+      <div className="mb-3 pl-4 ">
+        {details.sessionDate
+          ? new Date(details.sessionDate).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })
+          : "N/A"}
+      </div>
       <Accordion type="multiple" className="flex flex-col gap-4 mx-4">
         <AccordionItem
           value="item-1"
@@ -77,9 +93,23 @@ const HistoryAccordion: React.FC<HistoryAccordionProps> = ({
                 <span>{details.stage}</span>
               </div>
               <div className="mt-4 sm:ml-0 sm:mt-0">
-                <Button variant="default" size="sm">
+                <Button
+                  onClick={handlePrescriptionClick}
+                  variant="default"
+                  size="sm"
+                >
                   View Prescription
                 </Button>
+                <UniteModal
+                  onClose={() => setIsModalOpen(false)}
+                  title="Prescription Details"
+                  isOpen={isModalOpen}
+                  content={
+                    <div className="my-32 lg:my-52">
+                      <PrescriptionView prescriptionDetails={details} />
+                    </div>
+                  }
+                />
               </div>
             </div>
           </AccordionContent>
